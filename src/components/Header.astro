@@ -1,0 +1,31 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navItems = [
+  { href: '/', text: 'Home' },
+  { href: '/archive', text: 'Archive' },
+];
+---
+
+<header class="mb-8">
+  <nav class="flex items-center justify-between py-4">
+    <a href="/" class="text-2xl font-bold bg-gradient-to-r from-primary-800 to-primary-900 dark:from-primary-200 dark:to-primary-100 bg-clip-text text-transparent">
+      bitsbysoham
+    </a>
+    <div class="flex items-center gap-6">
+      <ul class="flex gap-6">
+        {navItems.map(item => (
+          <li>
+            <a 
+              href={item.href}
+              class="text-gray-600 dark:text-gray-300 hover:text-primary-800 dark:hover:text-primary-200 transition-colors"
+            >
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
