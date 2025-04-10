@@ -7,25 +7,70 @@ const navItems = [
 ];
 ---
 
-<header class="mb-8">
-  <nav class="flex items-center justify-between py-4">
-    <a href="/" class="text-2xl font-bold bg-gradient-to-r from-primary-800 to-primary-900 dark:from-primary-200 dark:to-primary-100 bg-clip-text text-transparent">
-      bitsbysoham
+<header class="mb-6 md:mb-8 lg:mb-10">
+  <nav class="flex items-center justify-between py-4 md:py-5 lg:py-6">
+    <a href="/" class="flex items-center">
+      <img
+        src="/qubit_dark.png"
+        alt="bitsbysoh4m logo"
+        class="h-6 md:h-7 lg:h-8 w-auto hidden dark:block"
+      />
+      <img
+        src="/qubit_light.png"
+        alt="bitsbysoh4m logo"
+        class="h-6 md:h-7 lg:h-8 w-auto block dark:hidden"
+      />
+      <span class="ml-2 text-xl md:text-2xl lg:text-3xl font-bold text-black dark:bg-gradient-to-r dark:from-primary-200 dark:to-primary-100 dark:bg-clip-text dark:text-transparent">
+        bitsbysoh4m
+      </span>
     </a>
-    <div class="flex items-center gap-6">
-      <ul class="flex gap-6">
+    
+    <div class="flex items-center gap-4 md:gap-5 lg:gap-6">
+      <div class="hidden md:flex md:items-center md:gap-6">
         {navItems.map(item => (
-          <li>
-            <a 
-              href={item.href}
-              class="text-gray-600 dark:text-gray-300 hover:text-primary-800 dark:hover:text-primary-200 transition-colors"
-            >
-              {item.text}
-            </a>
-          </li>
+          <a 
+            href={item.href}
+            class="text-gray-700 dark:text-gray-300 hover:text-primary-900 dark:hover:text-primary-200 transition-colors text-sm md:text-base lg:text-lg"
+          >
+            {item.text}
+          </a>
         ))}
-      </ul>
+      </div>
+      
       <ThemeToggle />
+      
+      <button 
+        id="mobile-menu-button"
+        class="md:hidden p-2 text-gray-700 dark:text-gray-300"
+        aria-label="Toggle menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-900 dark:hover:text-primary-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+        >
+          {item.text}
+        </a>
+      ))}
+    </div>
+  </div>
 </header>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

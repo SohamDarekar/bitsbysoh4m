@@ -24,6 +24,8 @@ export default {
             color: '#24242d',
             'h1, h2, h3, h4': {
               color: '#24242d',
+              overflowWrap: 'break-word',
+              hyphens: 'auto',
             },
             'code::before': {
               content: '""'
@@ -31,8 +33,24 @@ export default {
             'code::after': {
               content: '""'
             },
+            pre: {
+              overflowX: 'auto',
+              maxWidth: '100vw',
+            },
+            img: {
+              maxWidth: '100%',
+              height: 'auto',
+            },
           },
         },
+      },
+      screens: {
+        'xs': '320px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
       },
     },
   },
