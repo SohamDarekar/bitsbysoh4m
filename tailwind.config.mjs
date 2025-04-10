@@ -22,16 +22,31 @@ export default {
           css: {
             maxWidth: '65ch',
             color: '#24242d',
+            '[class~="lead"]': {
+              color: '#4b5563',
+            },
+            a: {
+              color: '#3b2f7e',
+              '&:hover': {
+                color: '#2d2a4d',
+              },
+            },
+            strong: {
+              color: '#24242d',
+            },
+            blockquote: {
+              color: '#4b5563',
+            },
             'h1, h2, h3, h4': {
               color: '#24242d',
               overflowWrap: 'break-word',
               hyphens: 'auto',
             },
             'code::before': {
-              content: '""'
+              content: '""',
             },
             'code::after': {
-              content: '""'
+              content: '""',
             },
             pre: {
               overflowX: 'auto',
@@ -40,6 +55,58 @@ export default {
             img: {
               maxWidth: '100%',
               height: 'auto',
+            },
+          },
+        },
+        dark: {
+          css: {
+            color: '#f3f4f6', // Much lighter gray, almost white for better readability
+            '[class~="lead"]': {
+              color: '#f3f4f6',
+            },
+            a: {
+              color: '#a5b4fc',
+              '&:hover': {
+                color: '#818cf8',
+              },
+            },
+            strong: {
+              color: '#ffffff',
+            },
+            blockquote: {
+              color: '#e5e7eb',
+              borderLeftColor: '#4b5563',
+            },
+            'h1, h2, h3, h4': {
+              color: '#ffffff',
+            },
+            'ul, ol': {
+              color: '#f3f4f6',
+            },
+            li: {
+              color: '#f3f4f6',
+            },
+            p: {
+              color: '#f3f4f6',
+            },
+            code: {
+              color: '#e5e7eb',
+            },
+            'pre code': {
+              color: '#e5e7eb',
+              backgroundColor: 'transparent',
+            },
+            hr: {
+              borderColor: '#4b5563',
+            },
+            'ol > li::marker': {
+              color: '#d1d5db',
+            },
+            'ul > li::marker': {
+              color: '#d1d5db',
+            },
+            'tbody td, thead th': {
+              color: '#f3f4f6',
             },
           },
         },

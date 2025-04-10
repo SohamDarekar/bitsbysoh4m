@@ -13,17 +13,17 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
 ---
 
 <BaseLayout title={frontmatter.title} description={frontmatter.description}>
-  <article class="prose prose-sm sm:prose prose-slate mx-auto px-4 sm:px-0">
+  <article class="prose prose-sm sm:prose prose-slate dark:prose-invert mx-auto px-4 sm:px-0 prose-headings:dark:text-gray-100">
     <header class="mb-4 sm:mb-8">
-      <h1 class="mb-2 text-2xl sm:text-4xl">{frontmatter.title}</h1>
-      <div class="text-gray-600 text-xs sm:text-sm">
+      <h1 class="mb-2 text-2xl sm:text-4xl text-gray-900 dark:text-gray-100">{frontmatter.title}</h1>
+      <div class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
         <time datetime={frontmatter.date}>{formattedDate}</time>
         <span class="mx-2">•</span>
         <span>{readingTime} min read</span>
       </div>
     </header>
 
-    <div class="mt-4 sm:mt-8">
+    <div class="mt-2 sm:mt-8 text-gray-900 dark:text-gray-100">
       <slot />
     </div>
   </article>
