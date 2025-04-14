@@ -33,11 +33,45 @@ const { posts, initialQuery = '' } = Astro.props;
           date={post.data.date}
           url={`/blog/${post.slug}`}
           content={post.body}
+          showSearchContext={false}
+          searchContext=""
+          searchQuery=""
         />
       </div>
     ))}
   </div>
 </div>
+
+<style>
+  .search-highlight {
+    background-color: rgba(255, 255, 0, 0.3);
+    padding: 0px 1px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  :global(.dark) .search-highlight {
+    background-color: rgba(255, 215, 0, 0.25);
+    color: #ffd700;
+  }
+
+  .search-context {
+    background-color: rgba(0, 0, 0, 0.04);
+    border-left: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0 4px 4px 0;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 0.95em;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  :global(.dark) .search-context {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-left: 3px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
 
 <script>
   const searchHeading = document.getElementById('search-heading');
@@ -46,12 +80,73 @@ const { posts, initialQuery = '' } = Astro.props;
   const clearSearchBtn = document.getElementById('clear-search');
   const postItems = document.querySelectorAll('.post-item');
   
+  // Extract context around the matched term
+  function extractContext(content: string, query: string, contextLength: number = 100): string {
+    if (!query || !content) return '';
+    
+    // Find the position of the match
+    const lowerContent = content.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    const matchPosition = lowerContent.indexOf(lowerQuery);
+    
+    if (matchPosition === -1) return '';
+    
+    // Calculate start and end positions for the context
+    let startPos = Math.max(0, matchPosition - contextLength);
+    let endPos = Math.min(content.length, matchPosition + query.length + contextLength);
+    
+    // Try to start at a space to avoid cutting words
+    if (startPos > 0) {
+      const prevSpace = content.lastIndexOf(' ', matchPosition);
+      if (prevSpace !== -1 && prevSpace > matchPosition - contextLength * 2) {
+        startPos = prevSpace + 1;
+      }
+    }
+    
+    // Try to end at a space or punctuation
+    if (endPos < content.length) {
+      const nextSpace = content.indexOf('. ', matchPosition);
+      if (nextSpace !== -1 && nextSpace < matchPosition + contextLength * 2) {
+        endPos = nextSpace + 1;
+      }
+    }
+    
+    // Extract the context
+    let context = content.substring(startPos, endPos);
+    
+    // Add ellipsis if needed
+    if (startPos > 0) context = '...' + context;
+    if (endPos < content.length) context += '...';
+    
+    return context;
+  }
+
+  // Highlight term in the context
+  function highlightTerm(context: string, query: string): string {
+    if (!query || !context) return context;
+    
+    // Create a case-insensitive RegExp
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    
+    // Replace with highlighted version
+    return context.replace(regex, '<span class="search-highlight">$1</span>');
+  }
+  
   // Function to filter posts based on search query
   function filterPosts(query: string) {
     if (!query) {
       // If no query, show all posts
       postItems.forEach(item => {
         item.classList.remove('hidden');
+        // Reset search context
+        const contextDiv = item.querySelector('.search-context');
+        if (contextDiv) contextDiv.remove();
+        
+        // Reset to standard description
+        const description = item.querySelector('.blog-description');
+        const searchContext = item.querySelector('.search-context');
+        if (description) description.classList.remove('hidden');
+        if (searchContext) searchContext.classList.add('hidden');
       });
       
       if (searchHeading) {
@@ -78,10 +173,37 @@ const { posts, initialQuery = '' } = Astro.props;
       const title = item.getAttribute('data-title') || '';
       const content = item.getAttribute('data-content') || '';
       const tags = item.getAttribute('data-tags') || '';
+      const originalContent = (item.querySelector('.blog-card') as HTMLElement)?.dataset.content || '';
       
       if (title.includes(query) || content.includes(query) || tags.includes(query)) {
         item.classList.remove('hidden');
         matchCount++;
+        
+        // Extract context with highlighted term
+        let context = extractContext(originalContent, query);
+        if (context) {
+          let highlightedContext = highlightTerm(context, query);
+          
+          // Find or create the search context element
+          let contextElement = item.querySelector('.search-context');
+          if (!contextElement) {
+            contextElement = document.createElement('div');
+            contextElement.className = 'search-context mt-2 text-sm text-gray-700 dark:text-gray-300';
+            const cardContent = item.querySelector('.blog-card-content');
+            if (cardContent) {
+              cardContent.appendChild(contextElement);
+            }
+          }
+          
+          // Hide standard description and show context
+          const description = item.querySelector('.blog-description');
+          if (description) description.classList.add('hidden');
+          
+          // Update the context
+          contextElement.innerHTML = highlightedContext;
+          contextElement.classList.remove('hidden');
+        }
+        
       } else {
         item.classList.add('hidden');
       }
