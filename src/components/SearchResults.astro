@@ -1,0 +1,135 @@
+---
+import BlogCard from './BlogCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  initialQuery?: string;
+}
+
+const { posts, initialQuery = '' } = Astro.props;
+---
+
+<div id="search-results" class="mt-6">
+  <h2 id="search-heading" class="text-2xl font-semibold mb-6">
+    {initialQuery 
+      ? `Search results for "${initialQuery}"` 
+      : 'All Posts'}
+  </h2>
+  
+  <div id="no-results" class="hidden py-8 text-center text-gray-600 dark:text-gray-400">
+    <p>No posts found matching your search criteria.</p>
+    <button id="clear-search" class="mt-4 px-6 py-2.5 text-sm rounded-lg bg-white/80 dark:bg-gray-800/80 text-primary-700 dark:text-primary-300 hover:bg-white dark:hover:bg-gray-700 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow backdrop-blur-sm transition-all duration-200">
+      Clear search
+    </button>
+  </div>
+  
+  <div id="results-list">
+    {posts.map(post => (
+      <div class="post-item" data-title={post.data.title.toLowerCase()} data-content={post.body.toLowerCase()} data-tags={post.data.tags?.join(' ').toLowerCase() || ''}>
+        <BlogCard
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          url={`/blog/${post.slug}`}
+          content={post.body}
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  const searchHeading = document.getElementById('search-heading');
+  const noResults = document.getElementById('no-results');
+  const resultsList = document.getElementById('results-list');
+  const clearSearchBtn = document.getElementById('clear-search');
+  const postItems = document.querySelectorAll('.post-item');
+  
+  // Function to filter posts based on search query
+  function filterPosts(query: string) {
+    if (!query) {
+      // If no query, show all posts
+      postItems.forEach(item => {
+        item.classList.remove('hidden');
+      });
+      
+      if (searchHeading) {
+        searchHeading.textContent = 'All Posts';
+      }
+      
+      if (noResults) {
+        noResults.classList.add('hidden');
+      }
+      return;
+    }
+    
+    if (searchHeading) {
+      searchHeading.textContent = `Search results for "${query}"`;
+    }
+    
+    // Normalize query
+    query = query.toLowerCase().trim();
+    
+    // Filter posts
+    let matchCount = 0;
+    
+    postItems.forEach(item => {
+      const title = item.getAttribute('data-title') || '';
+      const content = item.getAttribute('data-content') || '';
+      const tags = item.getAttribute('data-tags') || '';
+      
+      if (title.includes(query) || content.includes(query) || tags.includes(query)) {
+        item.classList.remove('hidden');
+        matchCount++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+    
+    // Show/hide no results message
+    if (noResults) {
+      if (matchCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+  }
+  
+  // Initialize search from URL params
+  function initializeSearch() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    if (query) {
+      filterPosts(query);
+    }
+  }
+  
+  // Listen for search updates
+  document.addEventListener('search-updated', (e: any) => {
+    filterPosts(e.detail.query);
+  });
+  
+  // Handle clear search button
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      // Reset search input
+      const searchInput = document.getElementById('search-input') as HTMLInputElement;
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      
+      // Update URL
+      const url = new URL(window.location.href);
+      url.searchParams.delete('q');
+      history.pushState({}, '', url);
+      
+      // Show all posts
+      filterPosts('');
+    });
+  }
+  
+  // Initialize on page load
+  initializeSearch();
+</script>
