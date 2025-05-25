@@ -16,12 +16,16 @@ export default {
           light: '#ffffff',
           dark: '#1a1a1a',
         },
+        text: {
+          light: '#24242d', // Added specific text color for light mode
+          dark: '#ffffff',  // Added specific text color for dark mode
+        },
       },
       typography: {
-        DEFAULT: {
+        light: {
           css: {
             maxWidth: '65ch',
-            color: '#24242d',
+            color: 'var(--tw-prose-body)',
             '[class~="lead"]': {
               color: '#4b5563',
             },
@@ -33,6 +37,7 @@ export default {
             },
             strong: {
               color: '#24242d',
+              fontWeight: '700',
             },
             blockquote: {
               color: '#4b5563',
@@ -56,13 +61,18 @@ export default {
               maxWidth: '100%',
               height: 'auto',
             },
+            hr: {
+              borderColor: '#000000',
+              borderWidth: '2px',  
+              borderStyle: 'solid',  
+            },
           },
         },
         dark: {
           css: {
-            color: '#f3f4f6', // Much lighter gray, almost white for better readability
+            color: '#ffffff',
             '[class~="lead"]': {
-              color: '#f3f4f6',
+              color: '#ffffff',
             },
             a: {
               color: '#a5b4fc',
@@ -72,22 +82,25 @@ export default {
             },
             strong: {
               color: '#ffffff',
+              fontWeight: '800',
+              textShadow: '0 0 1px rgba(255, 255, 255, 0.5)',
             },
             blockquote: {
-              color: '#e5e7eb',
+              color: '#ffffff',
               borderLeftColor: '#4b5563',
             },
             'h1, h2, h3, h4': {
               color: '#ffffff',
+              fontWeight: '600',
             },
             'ul, ol': {
-              color: '#f3f4f6',
+              color: '#ffffff',
             },
             li: {
-              color: '#f3f4f6',
+              color: '#ffffff',
             },
             p: {
-              color: '#f3f4f6',
+              color: '#ffffff',
             },
             code: {
               color: '#e5e7eb',
@@ -100,13 +113,18 @@ export default {
               borderColor: '#4b5563',
             },
             'ol > li::marker': {
-              color: '#d1d5db',
+              color: '#ffffff',
             },
             'ul > li::marker': {
               color: '#d1d5db',
             },
             'tbody td, thead th': {
-              color: '#f3f4f6',
+              color: '#ffffff',
+            },
+            b: {
+              color: '#ffffff',
+              fontWeight: '800',
+              textShadow: '0 0 1px rgba(255, 255, 255, 0.5)',
             },
           },
         },

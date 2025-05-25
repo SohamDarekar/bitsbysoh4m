@@ -34,6 +34,16 @@ function formatDate(date: Date): string {
     day: 'numeric'
   });
 }
+
+function formatTime(date: Date): string {
+  // Make sure date is a Date object
+  const dateObj = date instanceof Date ? date : new Date(date);
+  return dateObj.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+}
 ---
 
 <article class="blog-card mb-8 rounded-lg p-5 transition-all duration-200 hover:shadow-md border border-gray-500/70 hover:border-gray-800/90 dark:border-gray-500/90 dark:hover:border-gray-400/90 bg-white/10 dark:bg-black/5 hover:bg-white/20 dark:hover:bg-black/10" data-content={content}>
@@ -43,7 +53,9 @@ function formatDate(date: Date): string {
     </a>
     
     <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
-      <time datetime={date instanceof Date ? date.toISOString() : new Date(date).toISOString()}>{formatDate(date)}</time>
+      <time datetime={date instanceof Date ? date.toISOString() : new Date(date).toISOString()}>
+        {formatDate(date)} at {formatTime(date)}
+      </time>
       <span class="mx-2">•</span>
       <span>{readingTime} min read</span>
     </div>

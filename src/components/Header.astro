@@ -4,6 +4,7 @@ import ThemeToggle from './ThemeToggle.astro';
 const navItems = [
   { href: '/', text: 'Home' },
   { href: '/archive', text: 'Archive' },
+    { href: '/about', text: 'About' },
 ];
 ---
 
@@ -20,7 +21,7 @@ const navItems = [
         alt="bitsbysoh4m logo"
         class="h-6 md:h-7 lg:h-8 w-auto block dark:hidden"
       />
-      <span class="ml-2 text-xl md:text-2xl lg:text-3xl font-bold text-black dark:bg-gradient-to-r dark:from-primary-200 dark:to-primary-100 dark:bg-clip-text dark:text-transparent">
+      <span class="ml-2 text-xl md:text-2xl lg:text-3xl font-bold text-black dark:bg-gradient-to-r dark:from-gray-200 dark:to-primary-100 dark:bg-clip-text dark:text-transparent">
         bitsbysoh4m
       </span>
     </a>
@@ -30,7 +31,7 @@ const navItems = [
         {navItems.map(item => (
           <a 
             href={item.href}
-            class="text-gray-700 dark:text-gray-300 hover:text-primary-900 dark:hover:text-primary-200 transition-colors text-sm md:text-base lg:text-lg"
+            class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors text-sm md:text-base lg:text-lg"
           >
             {item.text}
           </a>
