@@ -24,7 +24,7 @@ export default {
       typography: {
         light: {
           css: {
-            maxWidth: '65ch',
+            maxWidth: '85ch', // Increased from 65ch
             color: 'var(--tw-prose-body)',
             '[class~="lead"]': {
               color: '#4b5563',
@@ -59,7 +59,7 @@ export default {
             },
             img: {
               maxWidth: '100%',
-              height: 'auto',
+              height: 'auto',maxWidth: '85ch'
             },
             hr: {
               borderColor: '#000000',
@@ -70,6 +70,7 @@ export default {
         },
         dark: {
           css: {
+            maxWidth: '85ch',
             color: '#ffffff',
             '[class~="lead"]': {
               color: '#ffffff',
