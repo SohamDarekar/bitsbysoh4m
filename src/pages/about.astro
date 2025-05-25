@@ -8,8 +8,7 @@ const { Content } = await about.render();
 
 <BaseLayout title="About Me | bitsbysoh4m">
   <div class="about-container">
-
-    <article class="about-content">
+    <article class="about-content prose prose-sm sm:prose lg:prose-lg prose-slate dark:prose-invert mx-auto prose-headings:dark:text-gray-100 prose-hr:border-gray-600">
       <Content />
     </article>
 
@@ -73,6 +72,36 @@ const { Content } = await about.render();
     display: none !important;
   }
 
+  /* Overrides for prose styling to maintain custom design elements */
+  :global(.about-content li) {
+    position: relative;
+    padding-left: 1.5rem;
+    list-style-type: none !important;
+  }
+
+  :global(.about-content li::before) {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--theme-accent);
+  }
+  
+  :global(.about-content ul) {
+    padding-left: 0.5rem;
+  }
+
+  /* Style links */
+  :global(.about-content a:not([href="/resume.pdf"])) {
+    color: var(--theme-accent);
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+
+  :global(.about-content a:not([href="/resume.pdf"]):hover) {
+    color: var(--theme-accent-2, var(--theme-accent));
+    text-decoration: none;
+  }
+
   :global(.about-content a[href="/resume.pdf"]) {
     display: inline-block;
     padding: 0.75rem 1.5rem;
@@ -88,63 +117,6 @@ const { Content } = await about.render();
   :global(.about-content a[href="/resume.pdf"]:hover) {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
-  }
-
-  /* Style headers */
-  :global(.about-content h1) {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: var(--theme-text);
-  }
-
-  :global(.about-content h2) {
-    font-size: 1.75rem;
-    margin: 2rem 0 1rem;
-    color: var(--theme-text);
-    border-bottom: 2px solid rgba(var(--theme-accent-rgb), 0.3);
-    padding-bottom: 0.5rem;
-  }
-
-  /* Style paragraphs */
-  :global(.about-content p) {
-    line-height: 1.8;
-    margin-bottom: 1.2rem;
-    color: var(--theme-text);
-  }
-
-  /* Style lists */
-  :global(.about-content ul) {
-    list-style-type: none;
-    padding-left: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  :global(.about-content li) {
-    margin-bottom: 0.7rem;
-    line-height: 1.6;
-    color: var(--theme-text);
-    position: relative;
-    padding-left: 1.5rem;
-  }
-
-  :global(.about-content li::before) {
-    content: "→";
-    position: absolute;
-    left: 0;
-    color: var(--theme-accent);
-  }
-
-  /* Style links */
-  :global(.about-content a:not([href="/resume.pdf"])) {
-    color: var(--theme-accent);
-    text-decoration: underline;
-    transition: color 0.2s;
-  }
-
-  :global(.about-content a:not([href="/resume.pdf"]):hover) {
-    color: var(--theme-accent-2, var(--theme-accent));
-    text-decoration: none;
   }
 
   /* Animations */
@@ -164,16 +136,16 @@ const { Content } = await about.render();
     }
   }
 
-  /* Media query for smaller screens */
-  @media (max-width: 768px) {
-    :global(.about-content h1) {
-      font-size: 2rem;
-    }
-    
-    :global(.about-content h2) {
-      font-size: 1.5rem;
-    }
+  /* Remove redundant styling now handled by prose classes */
+  :global(.about-content h1),
+  :global(.about-content h2),
+  :global(.about-content p) {
+    /* These will be handled by prose classes */
+  }
 
+  /* Media query adjustments */
+  @media (max-width: 768px) {
+    /* Keep any specific mobile overrides */
     .social-links-large {
       grid-template-columns: 1fr;
     }
