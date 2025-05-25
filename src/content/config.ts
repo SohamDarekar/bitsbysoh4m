@@ -11,6 +11,7 @@ const blog = defineCollection({
     tags: z.array(z.string()).optional(),
     image: z.string().optional(),
     draft: z.boolean().default(false),
+    customSlug: z.string().optional(), // Rename slug field to customSlug
   }),
 });
 

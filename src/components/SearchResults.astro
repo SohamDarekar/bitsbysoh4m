@@ -1,6 +1,7 @@
 ---
 import BlogCard from './BlogCard.astro';
 import type { CollectionEntry } from 'astro:content';
+import { getSlug } from '../utils/slug';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
@@ -34,20 +35,23 @@ const { posts, initialQuery = '' } = Astro.props;
   </div>
   
   <div id="results-list">
-    {posts.map(post => (
-      <div class="post-item" data-title={post.data.title.toLowerCase()} data-content={post.body.toLowerCase()} data-tags={post.data.tags?.join(' ').toLowerCase() || ''}>
-        <BlogCard
-          title={post.data.title}
-          description={post.data.description}
-          date={post.data.date}
-          url={`/blog/${post.slug}`}
-          content={post.body}
-          showSearchContext={false}
-          searchContext=""
-          searchQuery=""
-        />
-      </div>
-    ))}
+    {posts.map(post => {
+      const slug = post.data.customSlug || getSlug(post.data.title);
+      return (
+        <div class="post-item" data-title={post.data.title.toLowerCase()} data-content={post.body.toLowerCase()} data-tags={post.data.tags?.join(' ').toLowerCase() || ''}>
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            url={`/blog/${slug}`}
+            content={post.body}
+            showSearchContext={false}
+            searchContext=""
+            searchQuery=""
+          />
+        </div>
+      );
+    })}
   </div>
 </div>
 

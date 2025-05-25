@@ -1,13 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { getSlug } from '../../utils/slug';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  return posts.map(post => {
+    // Use provided slug in frontmatter or generate from title
+    const slug = post.data.customSlug || getSlug(post.data.title);
+    
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
 }
 
 const { post } = Astro.props;

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import { getCollection } from 'astro:content';
+import { getSlug } from '../utils/slug';
 
 const posts = await getCollection('blog', ({ data }) => {
   return !data.draft && import.meta.env.PROD ? true : true;
@@ -22,14 +23,17 @@ const sortedPosts = posts.sort(
 
   <section>
     <h2 class="text-2xl font-semibold mb-6">Latest Posts</h2>
-    {sortedPosts.map(post => (
-      <BlogCard
-        title={post.data.title}
-        description={post.data.description}
-        date={post.data.date}
-        url={`/blog/${post.slug}`}
-        content={post.body}
-      />
-    ))}
+    {sortedPosts.map(post => {
+      const slug = post.data.customSlug || getSlug(post.data.title);
+      return (
+        <BlogCard
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          url={`/blog/${slug}`}
+          content={post.body}
+        />
+      );
+    })}
   </section>
 </BaseLayout>
