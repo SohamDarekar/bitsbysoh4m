@@ -57,13 +57,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 
   <script>
+    import { isGAInitialized, sendGAEvent, whenGAReady } from '../scripts/analytics-helper.js';
+
     // Function to check GA status
     function checkGAStatus() {
       const statusEl = document.getElementById('ga-status');
       
       console.log("Checking for Google Analytics availability...");
+      console.log("Current hostname:", window.location.hostname);
       
-      if (window.gaInitialized && typeof window.gtag === 'function') {
+      if (isGAInitialized()) {
         statusEl.textContent = '✅ Google Analytics properly initialized and ready';
         statusEl.className = 'text-sm font-mono mt-1 text-green-600 dark:text-green-400';
         return true;
@@ -82,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     }
 
-    // Function to show cookies
+    // Function to show cookies with domain information
     function showGACookies() {
       const cookiesEl = document.getElementById('cookies-info');
       cookiesEl.classList.remove('hidden');
@@ -93,40 +96,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         cookie.trim().startsWith('_gid')
       );
       
+      const domainInfo = `<strong>Current Domain:</strong> ${window.location.hostname}<br>`;
+      
       if (gaCookies.length > 0) {
-        cookiesEl.innerHTML = '<strong>GA Cookies Found:</strong><br>' +
+        cookiesEl.innerHTML = domainInfo + 
+          '<strong>GA Cookies Found:</strong><br>' +
           gaCookies.map(c => `- ${c.trim()}`).join('<br>');
       } else {
-        cookiesEl.innerHTML = '<strong>No GA Cookies Found</strong><br>This is expected in development or if cookies are blocked.';
-      }
-    }
-
-    // Helper function to safely send GA events without overwriting cookies
-    function sendSafeGAEvent(eventName, params) {
-      if (typeof window.gtag !== 'function') {
-        return false;
-      }
-      
-      try {
-        // Use send_to parameter to avoid reconfiguring the tracker
-        const fullParams = {
-          ...params,
-          non_interaction: true,  // Won't affect bounce rate
-          send_to: 'G-P300W8XW2P' // Explicitly specify measurement ID
-        };
-        
-        // Send as event only, not as config which would reset cookies
-        window.gtag('event', eventName, fullParams);
-        return true;
-      } catch (error) {
-        console.error('Error sending GA event:', error);
-        return false;
+        cookiesEl.innerHTML = domainInfo + 
+          '<strong>No GA Cookies Found</strong><br>This may indicate a domain/cookie issue or cookies are blocked.';
       }
     }
 
     // Wait for page to load
     window.addEventListener('load', function() {
-      // Initial check
+      // Initial check with a delay
       setTimeout(checkGAStatus, 1000);
       
       // Set up button event handlers
@@ -138,7 +122,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         // Generate random ID for this test event
         const testId = Math.floor(Math.random() * 1000000);
         
-        const success = sendSafeGAEvent('test_event', {
+        const success = sendGAEvent('test_event', {
           'event_category': 'testing',
           'event_label': `Test event ${testId}`
         });
@@ -154,6 +138,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
       
       document.getElementById('show-cookies-button').addEventListener('click', showGACookies);
+      
+      // Register for GA ready events
+      whenGAReady(() => {
+        console.log("Google Analytics is now fully initialized and ready to use");
+        checkGAStatus();
+      });
     });
+    
+    // All GA events are sent using sendGAEvent, which only uses 'event' calls.
+    // Never call gtag('config', ...) here to avoid cookie warnings.
   </script>
 </BaseLayout>
