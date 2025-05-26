@@ -1,11 +1,29 @@
+---
+const isProd = import.meta.env.PROD;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>bitsbysoh4m</title>
+
+		{isProd && (
+			<>
+				<!-- Google Analytics -->
+				<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q0NNTS12MW"></script>
+				<script>
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-Q0NNTS12MW');
+					`}
+				</script>
+			</>
+		)}
 	</head>
 	<body>
 		<slot />
