@@ -11,7 +11,6 @@ interface Props {
 const { title, description = "A weekly personal blog by Soham", forceGA = false } = Astro.props;
 const isProd = import.meta.env.PROD;
 const loadGA = isProd || forceGA;
-const analyticsId = 'G-P300W8XW2P';
 ---
 
 <!doctype html>
@@ -47,13 +46,13 @@ const analyticsId = 'G-P300W8XW2P';
     <!-- Google Analytics -->
     {loadGA && (
       <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}></script>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=G-P300W8XWV2`}></script>
         <script is:inline>
           window.dataLayer = window.dataLayer || [];
           function gtag(){ dataLayer.push(arguments); }
 
           gtag('js', new Date());
-          gtag('config', '{analyticsId}', {
+          gtag('config', 'G-P300W8XWV2', {
             cookie_flags: 'SameSite=None;Secure'
           });
         </script>
