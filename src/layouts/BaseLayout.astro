@@ -70,14 +70,13 @@ const loadGA = isProd || forceGA; // Load GA in production OR if forceGA is true
           }
 
 
-            // Only ONE config call before loading the script
             window.gtag('config', analyticsId, {
-              cookie_domain: cookieDomain,
-              cookie_expires: 63072000, // 2 years in seconds
-              cookie_update: false,     // Prevents overwriting
-              cookie_flags: 'SameSite=None;Secure',
-              debug_mode: !isProd
-            });
+  cookie_domain: cookieDomain,
+  cookie_update: false,
+  cookie_flags: 'SameSite=None;Secure',
+  debug_mode: !isProd
+});
+
 
             // Load the analytics script after configuration
             if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
