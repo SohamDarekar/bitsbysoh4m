@@ -15,7 +15,7 @@ const { title, description = "A weekly personal blog by Soham" } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
-    <link rel="icon" type="image/svg+xml" href="/public/qubit_dark.png" />
+    <link rel="icon" type="image/svg+xml" href="/qubit_dark.png" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title} | bitsbysoh4m</title>
@@ -39,6 +39,15 @@ const { title, description = "A weekly personal blog by Soham" } = Astro.props;
       window.localStorage.setItem('theme', theme);
     </script>
     <script defer data-domain="bitsbysoh4m.netlify.app" src="https://plausible.io/js/script.js"></script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P300W8XWV2"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-P300W8XWV2');
+    </script>
   </head>
   <body class="min-h-screen bg-surface-light dark:bg-surface-dark text-gray-900 dark:text-gray-100 transition-colors">
     <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-8">
@@ -48,6 +57,16 @@ const { title, description = "A weekly personal blog by Soham" } = Astro.props;
       </main>
       <Footer />
     </div>
+    
+    <!-- Handle client-side navigation events for GA -->
+    <script is:inline>
+      document.addEventListener('astro:after-swap', () => {
+        // Send pageview to Google Analytics on client-side navigation
+        gtag('config', 'G-P300W8XWV2', {
+          page_path: window.location.pathname,
+        });
+      });
+    </script>
   </body>
 </html>
 
