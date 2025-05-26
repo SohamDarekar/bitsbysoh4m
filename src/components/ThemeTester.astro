@@ -1,0 +1,87 @@
+---
+---
+
+<div class="theme-test-container">
+  <h2>Theme Toggle Test</h2>
+  <p>Current theme: <span id="current-theme">checking...</span></p>
+  <button id="toggle-theme" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
+    Toggle Theme
+  </button>
+  
+  <h2 class="mt-6">Analytics Test</h2>
+  <p>Analytics status: <span id="analytics-status">checking...</span></p>
+  <button id="test-analytics" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
+    Trigger Test Event
+  </button>
+</div>
+
+<script>
+  // Theme testing
+  const themeDisplay = document.getElementById('current-theme');
+  const themeToggle = document.getElementById('toggle-theme');
+  
+  function updateThemeDisplay() {
+    const isDark = document.documentElement.classList.contains('dark');
+    themeDisplay.textContent = isDark ? 'dark' : 'light';
+  }
+  
+  updateThemeDisplay();
+  
+  themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    updateThemeDisplay();
+  });
+  
+  // Analytics testing
+  const analyticsStatus = document.getElementById('analytics-status');
+  const testAnalytics = document.getElementById('test-analytics');
+  
+  // Check if Google Analytics is loaded
+  if (window.gtag) {
+    analyticsStatus.textContent = 'Google Analytics detected';
+  } else {
+    analyticsStatus.textContent = 'Google Analytics not detected (expected in dev environment)';
+  }
+  
+  testAnalytics.addEventListener('click', () => {
+    if (window.gtag) {
+      window.gtag('event', 'test_event', {
+        'event_category': 'testing',
+        'event_label': 'Test button clicked'
+      });
+      analyticsStatus.textContent = 'Test event sent to Google Analytics';
+    } else {
+      analyticsStatus.textContent = 'Google Analytics not available (expected in dev environment)';
+    }
+  });
+</script>
+
+<style>
+  .theme-test-container {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    background-color: #f9f9f9;
+  }
+  
+  :global(.dark) .theme-test-container {
+    background-color: #333;
+    border-color: #555;
+  }
+  
+  h2 {
+    margin-bottom: 1rem;
+  }
+  
+  button {
+    margin-top: 1rem;
+  }
+</style>

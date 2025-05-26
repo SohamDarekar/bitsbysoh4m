@@ -5,9 +5,12 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  forceGA?: boolean; // Add this prop to force GA in development
 }
 
-const { title, description = "A weekly personal blog by Soham" } = Astro.props;
+const { title, description = "A weekly personal blog by Soham", forceGA = false } = Astro.props;
+const isProd = import.meta.env.PROD;
+const loadGA = isProd || forceGA; // Load GA in production OR if forceGA is true
 ---
 
 <!doctype html>
@@ -40,14 +43,46 @@ const { title, description = "A weekly personal blog by Soham" } = Astro.props;
     </script>
     <script defer data-domain="bitsbysoh4m.netlify.app" src="https://plausible.io/js/script.js"></script>
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P300W8XWV2"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-P300W8XWV2');
-    </script>
+    <!-- Google Analytics - Load in production or when forced for testing -->
+    {loadGA && (
+      <>
+        <script is:inline define:vars={{ analyticsId: 'G-P300W8XW2P', isProd: import.meta.env.PROD }}>
+          // Ensure we don't initialize GA multiple times
+          if (!window.gaInitialized) {
+            // Pre-load the dataLayer
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function() {
+              dataLayer.push(arguments);
+            };
+            
+            // Explicitly set gtag command to prevent overrides
+            window.gtag('js', new Date());
+            
+            // Single config call to prevent cookie overwrites
+            window.gtag('config', analyticsId, {
+              cookie_domain: 'auto',
+              cookie_expires: 63072000, // 2 years in seconds
+              cookie_update: false,     // Prevents overwriting
+              debug_mode: !isProd
+            });
+            
+            // Load the analytics script after configuration
+            const gtagScript = document.createElement('script');
+            gtagScript.async = true;
+            gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+            document.head.appendChild(gtagScript);
+            
+            // Mark as initialized
+            window.gaInitialized = true;
+            
+            // Log initialization
+            console.log('Google Analytics configuration complete in ' + 
+              (isProd ? 'production' : 'development (test mode)'));
+          }
+        </script>
+      </>
+    )}
+    
   </head>
   <body class="min-h-screen bg-surface-light dark:bg-surface-dark text-gray-900 dark:text-gray-100 transition-colors">
     <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-8">
@@ -58,15 +93,39 @@ const { title, description = "A weekly personal blog by Soham" } = Astro.props;
       <Footer />
     </div>
     
-    <!-- Handle client-side navigation events for GA -->
-    <script is:inline>
-      document.addEventListener('astro:after-swap', () => {
-        // Send pageview to Google Analytics on client-side navigation
-        gtag('config', 'G-P300W8XWV2', {
-          page_path: window.location.pathname,
+    {loadGA && (
+      <script is:inline>
+        // Wait for page to fully load before attaching navigation event listener
+        window.addEventListener('load', function() {
+          // Check for gtag function with retry mechanism
+          function checkGtagAndBind(retries = 3) {
+            if (typeof window.gtag === 'function') {
+              console.log('Google Analytics ready for tracking page views');
+              
+              // Handle client-side navigation
+              document.addEventListener('astro:after-swap', () => {
+                // Use safe event tracking method to prevent cookie overwrites
+                window.gtag('event', 'page_view', {
+                  send_to: 'G-P300W8XW2P',
+                  page_location: window.location.href,
+                  page_path: window.location.pathname,
+                  page_title: document.title,
+                  non_interaction: false
+                });
+              });
+            } else if (retries > 0) {
+              console.log(`Waiting for gtag to be available... (${retries} retries left)`);
+              setTimeout(() => checkGtagAndBind(retries - 1), 1000);
+            } else {
+              console.warn('Google Analytics failed to initialize properly');
+            }
+          }
+          
+          // Start checking with 3 retries
+          checkGtagAndBind(3);
         });
-      });
-    </script>
+      </script>
+    )}
   </body>
 </html>
 
