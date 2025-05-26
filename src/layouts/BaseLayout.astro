@@ -11,6 +11,7 @@ interface Props {
 const { title, description = "A weekly personal blog by Soham", forceGA = false } = Astro.props;
 const isProd = import.meta.env.PROD;
 const loadGA = isProd || forceGA;
+const analyticsId = 'G-P300W8XW2P';
 ---
 
 <!doctype html>
@@ -43,48 +44,18 @@ const loadGA = isProd || forceGA;
       window.localStorage.setItem('theme', theme);
     </script>
 
-    <!-- Google Analytics - Only in production or when forced -->
+    <!-- Google Analytics -->
     {loadGA && (
       <>
-        <script is:inline define:vars={{ analyticsId: 'G-P300W8XW2P', isProd: import.meta.env.PROD }}>
-          if (!window.gaInitialized) {
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function () {
-              dataLayer.push(arguments);
-            };
-            window.gtag('js', new Date());
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
 
-            const hostname = window.location.hostname;
-            const domainParts = hostname.split('.');
-            let cookieDomain;
-            if (hostname.endsWith('.netlify.app')) {
-              cookieDomain = hostname;
-            } else if (domainParts.length > 2 && hostname.includes('github.io')) {
-              cookieDomain = `.${domainParts[domainParts.length - 2]}.${domainParts[domainParts.length - 1]}`;
-            } else if (hostname === 'localhost') {
-              cookieDomain = '';
-            } else {
-              cookieDomain = hostname;
-            }
-
-            window.gtag('config', analyticsId, {
-              cookie_domain: cookieDomain,
-              cookie_update: false,
-              cookie_flags: 'SameSite=None;Secure',
-              debug_mode: !isProd
-            });
-
-            if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
-              const gtagScript = document.createElement('script');
-              gtagScript.async = true;
-              gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
-              document.head.appendChild(gtagScript);
-            }
-
-            window.gaInitialized = true;
-            console.log(`Google Analytics configured with cookie domain: ${cookieDomain} in ` + 
-              (isProd ? 'production' : 'development (test mode)'));
-          }
+          gtag('js', new Date());
+          gtag('config', '{analyticsId}', {
+            cookie_flags: 'SameSite=None;Secure'
+          });
         </script>
       </>
     )}
@@ -99,25 +70,17 @@ const loadGA = isProd || forceGA;
       <Footer />
     </div>
 
+    <!-- Astro SPA Navigation Tracking -->
     {loadGA && (
       <script is:inline>
-        window.addEventListener('load', function () {
-          function bindAstroNavigation() {
-            if (typeof window.gtag === 'function') {
-              document.addEventListener('astro:after-swap', () => {
-                window.gtag('event', 'page_view', {
-                  send_to: 'G-P300W8XW2P',
-                  page_location: window.location.href,
-                  page_path: window.location.pathname,
-                  page_title: document.title,
-                  non_interaction: false
-                });
-              });
-            } else {
-              setTimeout(bindAstroNavigation, 500);
-            }
+        window.addEventListener('astro:after-swap', () => {
+          if (typeof gtag === 'function') {
+            gtag('event', 'page_view', {
+              page_location: window.location.href,
+              page_path: window.location.pathname,
+              page_title: document.title
+            });
           }
-          bindAstroNavigation();
         });
       </script>
     )}
