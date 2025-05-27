@@ -5,12 +5,10 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
-  forceGA?: boolean;
+  forceGA?: boolean; // Keeping this to avoid breaking existing code
 }
 
-const { title, description = "A weekly personal blog by Soham", forceGA = false } = Astro.props;
-const isProd = import.meta.env.PROD;
-const loadGA = isProd || forceGA;
+const { title, description = "A weekly personal blog by Soham" } = Astro.props;
 ---
 
 <!doctype html>
@@ -43,21 +41,8 @@ const loadGA = isProd || forceGA;
       window.localStorage.setItem('theme', theme);
     </script>
 
-    <!-- Google Analytics -->
-    {loadGA && (
-      <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=G-P300W8XWV2`}></script>
-        <script is:inline>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){ dataLayer.push(arguments); }
-
-          gtag('js', new Date());
-          gtag('config', 'G-P300W8XWV2', {
-            cookie_flags: 'SameSite=None;Secure'
-          });
-        </script>
-      </>
-    )}
+    <!-- Umami Analytics -->
+    <script defer src="https://umami-analytics-w2lg.onrender.com/script.js" data-website-id="b01a028a-56c5-4fb2-8e09-49827fb23717"></script>
   </head>
 
   <body class="min-h-screen bg-surface-light dark:bg-surface-dark text-gray-900 dark:text-gray-100 transition-colors">
@@ -68,21 +53,6 @@ const loadGA = isProd || forceGA;
       </main>
       <Footer />
     </div>
-
-    <!-- Astro SPA Navigation Tracking -->
-    {loadGA && (
-      <script is:inline>
-        window.addEventListener('astro:after-swap', () => {
-          if (typeof gtag === 'function') {
-            gtag('event', 'page_view', {
-              page_location: window.location.href,
-              page_path: window.location.pathname,
-              page_title: document.title
-            });
-          }
-        });
-      </script>
-    )}
   </body>
 </html>
 
