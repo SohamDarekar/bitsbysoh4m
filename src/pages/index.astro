@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { getSlug } from '../utils/slug';
 
 const posts = await getCollection('blog', ({ data }) => {
-  return !data.draft && import.meta.env.PROD ? true : true;
+  return !data.draft || import.meta.env.MODE !== 'production';
 });
 
 const sortedPosts = posts.sort(
