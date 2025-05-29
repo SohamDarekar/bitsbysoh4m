@@ -6,8 +6,12 @@ import { getDb } from './db.js';
 dotenv.config();
 
 const app = express();
-// Add CORS support
-app.use(cors());
+// Update CORS configuration to allow requests from the website
+app.use(cors({
+  origin: ['https://bitsbysoh4m.netlify.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 
 // Add a health check endpoint to verify the API is running
 app.get('/api/health', (req, res) => {

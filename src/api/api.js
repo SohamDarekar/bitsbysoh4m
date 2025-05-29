@@ -49,7 +49,12 @@ if (!process.env.MONGODB_URI) {
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// Update CORS configuration to allow requests from the website
+app.use(cors({
+  origin: ['https://bitsbysoh4m.netlify.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true
+}));
 app.use(rateLimit({ windowMs: 60 * 1000, max: 10 }));
 
 function isValidEmail(email) {
@@ -174,6 +179,7 @@ const PORT = process.env.PORT || 4000;
 │  🚀 NEWSLETTER API STARTED                              │
 │  📅 ${now}                                 │
 │  🔌 Running on port ${PORT}                                │
+│  🌐 Configured for: https://bitsbysoh4m.netlify.app     │
 │                                                         │
 ╰─────────────────────────────────────────────────────────╯
 

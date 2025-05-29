@@ -6,10 +6,12 @@
  */
 
 const API_URL = process.env.API_URL || 'http://localhost:4000';
+const WEBSITE_URL = 'https://bitsbysoh4m.netlify.app';
 const TEST_EMAIL = `test_${Date.now()}@example.com`;
 
 console.log('⚡ API Test Tool');
 console.log(`🔗 Testing API at ${API_URL}`);
+console.log(`🌐 Testing for website: ${WEBSITE_URL}`);
 
 // Simple fetch wrapper to make testing easier
 async function fetchApi(endpoint, options = {}) {
@@ -44,7 +46,7 @@ async function runTests() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Referer': 'api-test-script'
+        'Referer': WEBSITE_URL
       },
       body: JSON.stringify({ email: TEST_EMAIL })
     });
@@ -58,7 +60,7 @@ async function runTests() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Referer': 'api-test-script'
+        'Referer': WEBSITE_URL
       },
       body: JSON.stringify({ email: TEST_EMAIL })
     });

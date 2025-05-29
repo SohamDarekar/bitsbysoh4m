@@ -8,7 +8,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // for local dev, no origin restriction
+// Update CORS configuration to allow requests from the website
+app.use(cors({
+  origin: ['https://bitsbysoh4m.netlify.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(rateLimit({ windowMs: 60 * 1000, max: 5 }));
 
 function isValidEmail(email) {
