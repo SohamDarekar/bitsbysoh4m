@@ -5,6 +5,7 @@
   "main": "api.js",
   "scripts": {
     "start": "node api.js",
+    "build": "echo 'No build step required'",
     "test": "node test-api.js",
     "test-db": "node test-db.js"
   },
