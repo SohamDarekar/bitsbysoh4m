@@ -49,9 +49,14 @@ if (!process.env.MONGODB_URI) {
 
 const app = express();
 app.use(express.json());
-// Update CORS configuration to allow requests from the website
+// Update CORS configuration to allow requests from all your domains
 app.use(cors({
-  origin: ['https://bitsbysoh4m.netlify.app', 'http://localhost:3000'],
+  origin: [
+    'https://bitsbysoh4m.netlify.app', 
+    'http://localhost:3000',
+    'https://bitsbysoh4m.com', // Add your main domain if different
+    'https://www.bitsbysoh4m.com' // Add www subdomain if applicable
+  ],
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true
 }));

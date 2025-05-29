@@ -6,9 +6,14 @@ import { getDb } from './db.js';
 dotenv.config();
 
 const app = express();
-// Update CORS configuration to allow requests from the website
+// Update CORS configuration to allow requests from all your domains
 app.use(cors({
-  origin: ['https://bitsbysoh4m.netlify.app', 'http://localhost:3000'],
+  origin: [
+    'https://bitsbysoh4m.netlify.app', 
+    'http://localhost:3000',
+    'https://bitsbysoh4m.com', // Add your main domain if different
+    'https://www.bitsbysoh4m.com' // Add www subdomain if applicable
+  ],
   methods: ['GET', 'POST'],
   credentials: true
 }));

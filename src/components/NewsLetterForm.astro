@@ -267,23 +267,21 @@ async function handleSubmit(e) {
           
           console.log('Submitting newsletter form with email:', email);
           
-          // In dev mode, log the full request details
-          const isDev = window.location.hostname === 'localhost' || 
-                        window.location.hostname === '127.0.0.1';
-          
           // Determine the API URL based on environment
-          const apiUrl = isDev 
-            ? 'http://localhost:4000/api/subscribe'  
-            : '/api/subscribe';                      
+          const isProd = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
           
-          if (isDev) {
-            console.log('Development mode detected, using API URL:', apiUrl);
-          }
+          // Use the Render API URL for production, local URL for development
+          const apiUrl = isProd 
+            ? 'https://bitsbysoh4m-api.onrender.com/api/subscribe'  
+            : 'http://localhost:4000/api/subscribe';
+          
+          console.log('Using API URL:', apiUrl);
           
           const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Origin': window.location.origin
             },
             body: JSON.stringify({ email }),
           });
@@ -307,7 +305,7 @@ async function handleSubmit(e) {
         } catch (error) {
           console.error('Error during subscription:', error);
           feedbackDiv.className = 'form-msg error';
-          feedbackMsg.textContent = 'Network error. Please try again.';
+          feedbackMsg.textContent = 'Network error connecting to our subscription service. Please try again later.';
         } finally {
           // Reset button state
           submitBtn.disabled = false;
