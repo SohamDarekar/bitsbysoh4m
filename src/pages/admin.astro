@@ -392,8 +392,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   // --- API Base ---
   const API_BASE = location.hostname === 'localhost'
-    ? 'http://localhost:4000/api'  // Make sure this port matches your API server port
-    : '/api';
+    ? 'http://localhost:4000/api'  // For local development
+    : 'https://bitsbysoh4m-api.onrender.com/api';  // For production
 
   // --- Login ---
   async function login() {
