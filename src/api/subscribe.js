@@ -14,7 +14,8 @@ app.use(cors({
     'https://bitsbysoh4m.netlify.app', 
     'http://localhost:3000',
     'https://bitsbysoh4m.com', // Add your main domain if different
-    'https://www.bitsbysoh4m.com' // Add www subdomain if applicable
+    'https://www.bitsbysoh4m.com', // Add www subdomain if applicable
+    'http://localhost:4321'
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true

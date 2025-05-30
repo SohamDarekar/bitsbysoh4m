@@ -9,10 +9,11 @@ const app = express();
 // Update CORS configuration to allow requests from all your domains
 app.use(cors({
   origin: [
-    'https://bitsbysoh4m.netlify.app', 
+    'https://bitsbysoh4m.netlify.app',
     'http://localhost:3000',
-    'https://bitsbysoh4m.com', // Add your main domain if different
-    'https://www.bitsbysoh4m.com' // Add www subdomain if applicable
+    'https://bitsbysoh4m.com',
+    'https://www.bitsbysoh4m.com',
+    'http://localhost:4321'
   ],
   methods: ['GET', 'POST'],
   credentials: true

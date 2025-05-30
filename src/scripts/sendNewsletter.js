@@ -49,7 +49,19 @@ async function main() {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
     const ask = (q) => new Promise((res) => rl.question(q, res));
     const subject = await ask("Subject: ");
-    const html = await ask("HTML content: ");
+    
+    // Instead of asking for HTML content, prompt for a file path
+    const htmlFilePath = await ask("Path to HTML content file: ");
+    // Read HTML content from file
+    let html;
+    try {
+      html = fs.readFileSync(htmlFilePath, 'utf8');
+      console.log(`HTML content loaded from ${htmlFilePath}`);
+    } catch (error) {
+      console.error(`Error reading HTML file: ${error.message}`);
+      process.exit(1);
+    }
+    
     rl.close();
 
     for (const sub of subscribers) {

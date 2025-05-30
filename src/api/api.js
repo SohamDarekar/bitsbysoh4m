@@ -32,11 +32,29 @@ console.log("Environment loaded:");
 console.log("MONGODB_URI:", process.env.MONGODB_URI ? "✅ Set" : "❌ Missing");
 console.log("PORT:", process.env.PORT || "4000 (default)");
 
+// Load admin password and JWT secret from environment
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const JWT_SECRET = process.env.JWT_SECRET || ADMIN_PASSWORD || 'supersecret';
+
+// Warn if secrets are missing
+if (!ADMIN_PASSWORD) {
+  console.error("❌ ERROR: Missing ADMIN_PASSWORD environment variable. Check your .env file.");
+  process.exit(1);
+}
+if (!JWT_SECRET) {
+  console.error("❌ ERROR: Missing JWT_SECRET environment variable. Check your .env file.");
+  process.exit(1);
+}
+
 // Load remaining imports only after environment is configured
 import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { getDb, closeDb } from './db.js';
+import jwt from 'jsonwebtoken';
+
+// Import debug utilities
+import { logEndpointCall, logApiError, inspectSmtpConfig } from './debug.js';
 
 // Create explicit server object for better control
 let server = null;
@@ -55,15 +73,44 @@ app.use(cors({
     'https://bitsbysoh4m.netlify.app', 
     'http://localhost:3000',
     'https://bitsbysoh4m.com', // Add your main domain if different
-    'https://www.bitsbysoh4m.com' // Add www subdomain if applicable
+    'https://www.bitsbysoh4m.com', // Add www subdomain if applicable
+    'http://localhost:4321'
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true
 }));
-app.use(rateLimit({ windowMs: 60 * 1000, max: 10 }));
 
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+// Create separate rate limiters for public and admin routes
+const publicRateLimiter = rateLimit({ 
+  windowMs: 60 * 1000, // 1 minute
+  max: 10,             // 10 requests per minute
+  message: 'Too many requests, please try again later.'
+});
+
+const adminRateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30,             // 30 requests per minute for admin routes
+  message: 'Too many admin requests, please try again later.',
+  keyGenerator: (req) => {
+    // Use a different key for admin routes to separate limits
+    return req.headers.authorization || req.ip;
+  }
+});
+
+// Apply rate limiter only to public routes
+app.use(/^(?!\/api\/admin).+/, publicRateLimiter);
+
+// Middleware to check admin JWT
+function requireAdmin(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ success: false, message: 'No token' });
+  try {
+    const decoded = jwt.verify(auth.replace('Bearer ', ''), JWT_SECRET);
+    if (!decoded.admin) throw new Error('Not admin');
+    next();
+  } catch {
+    res.status(401).json({ success: false, message: 'Invalid token' });
+  }
 }
 
 // Health check endpoint
@@ -261,5 +308,167 @@ process.on('SIGTERM', async () => {
 
 // The definitive way to keep Node.js running
 setInterval(() => {}, 1000 * 60 * 60);
+
+// Admin login endpoint
+app.post('/api/admin', adminRateLimiter, (req, res) => {
+  // Debug log for incoming password
+  console.log("Admin login attempt. Received password:", req.body.password ? '[provided]' : '[missing]');
+  // Debug log for loaded ADMIN_PASSWORD
+  console.log("Loaded ADMIN_PASSWORD:", ADMIN_PASSWORD ? '[set]' : '[missing]');
+  const { password } = req.body;
+  if (!password || password !== ADMIN_PASSWORD) {
+    console.log("Admin login failed: invalid password");
+    return res.status(401).json({ success: false, message: 'Unauthorized' });
+  }
+  const token = jwt.sign({ admin: true }, JWT_SECRET, { expiresIn: '2h' });
+  console.log("Admin login successful, token issued");
+  res.json({ success: true, token });
+});
+
+// Admin: test API
+app.get('/api/admin/test-api', adminRateLimiter, requireAdmin, (req, res) => {
+  res.json({ success: true, message: 'API is working' });
+});
+
+// Admin: test DB
+app.get('/api/admin/test-db', adminRateLimiter, requireAdmin, async (req, res) => {
+  try {
+    const db = await getDb();
+    const count = await db.collection('subscribers').countDocuments();
+    res.json({ success: true, message: 'DB is working', subscriberCount: count });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'DB error', error: e.message });
+  }
+});
+
+// Admin: send newsletter
+app.post('/api/admin/send-newsletter', adminRateLimiter, requireAdmin, async (req, res) => {
+  const { subject, html, scheduled, segment } = req.body;
+  if (!subject || !html) return res.status(400).json({ success: false, message: 'Missing subject or html' });
+  
+  try {
+    const db = await getDb();
+    
+    // Handle segmentation if specified
+    let query = { unsubscribed: { $ne: true } };
+    if (segment === 'active') {
+      // Only active subscribers who have opened emails in the last 60 days
+      const sixtyDaysAgo = new Date();
+      sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+      query.lastOpenedAt = { $gte: sixtyDaysAgo };
+    } else if (segment === 'recent') {
+      // Only subscribers from the last 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      query.subscribedAt = { $gte: thirtyDaysAgo };
+    }
+    
+    const subscribers = await db.collection('subscribers').find(query).toArray();
+    
+    // If there are no subscribers, return early
+    if (subscribers.length === 0) {
+      return res.json({ success: true, sent: 0, failed: 0, total: 0, message: 'No matching subscribers found' });
+    }
+    
+    // If this is a scheduled newsletter, save it to database and return
+    if (scheduled) {
+      await db.collection('scheduledNewsletters').insertOne({
+        subject,
+        html,
+        scheduledFor: new Date(scheduled),
+        segment,
+        createdAt: new Date(),
+      });
+      return res.json({ 
+        success: true, 
+        scheduled: true, 
+        scheduledFor: scheduled,
+        recipientCount: subscribers.length
+      });
+    }
+    
+    // Otherwise, send the newsletter now
+    const nodemailer = (await import('nodemailer')).default;
+    
+    // Create transporter with proper error handling
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: (process.env.SMTP_SECURE === 'true'),
+      auth: { 
+        user: process.env.SMTP_USER, 
+        pass: process.env.SMTP_PASS 
+      },
+      tls: {
+        rejectUnauthorized: false // Useful in development
+      }
+    });
+    
+    // Verify SMTP connection
+    await transporter.verify().catch(error => {
+      console.error("SMTP Verification Error:", error);
+      throw new Error(`SMTP connection failed: ${error.message}`);
+    });
+    
+    let sent = 0, failed = 0;
+    const websiteUrl = process.env.WEBSITE_URL || 'https://bitsbysoh4m.netlify.app/';
+    const fromName = process.env.SMTP_FROM_NAME || 'Bits by Soham';
+    const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
+    
+    for (const sub of subscribers) {
+      const unsubscribeUrl = `${websiteUrl}api/unsubscribe?email=${encodeURIComponent(sub.email)}`;
+      try {
+        await transporter.sendMail({
+          from: `"${fromName}" <${fromEmail}>`,
+          to: sub.email,
+          subject,
+          html: `${html}
+                <br><br>
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; font-size: 12px; color: #666;">
+                  <p>You're receiving this email because you subscribed to Bits by Soham.</p>
+                  <p><a href="${unsubscribeUrl}" style="color: #666;">Unsubscribe</a> if you no longer wish to receive these emails.</p>
+                </div>`,
+        });
+        
+        // Update last sent date for this subscriber
+        await db.collection('subscribers').updateOne(
+          { email: sub.email },
+          { $set: { lastEmailSentAt: new Date() } }
+        );
+        
+        sent++;
+      } catch (error) {
+        console.error(`Failed to send to ${sub.email}:`, error);
+        failed++;
+      }
+    }
+    
+    // Log the newsletter for records
+    await db.collection('sentNewsletters').insertOne({
+      subject,
+      html,
+      sentAt: new Date(),
+      sent,
+      failed,
+      total: subscribers.length
+    });
+    
+    res.json({ success: true, sent, failed, total: subscribers.length });
+  } catch (e) {
+    console.error("Newsletter send error:", e);
+    res.status(500).json({ success: false, message: `Send failed: ${e.message}`, error: e.message });
+  }
+});
+
+// Admin: get all subscribers (for admin panel)
+app.get('/api/admin/subscribers', adminRateLimiter, requireAdmin, async (req, res) => {
+  try {
+    const db = await getDb();
+    const subscribers = await db.collection('subscribers').find({}).sort({ subscribedAt: -1 }).toArray();
+    res.json({ success: true, subscribers });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'DB error', error: e.message });
+  }
+});
 
 export default app;
