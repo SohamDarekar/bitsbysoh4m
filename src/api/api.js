@@ -59,6 +59,11 @@ import { logEndpointCall, logApiError, inspectSmtpConfig } from './debug.js';
 // Create explicit server object for better control
 let server = null;
 
+// Add the missing isValidEmail function
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 // Verify MongoDB URI
 if (!process.env.MONGODB_URI) {
   console.error("❌ ERROR: Missing MONGODB_URI environment variable. Check your .env file.");
