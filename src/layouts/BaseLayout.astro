@@ -21,8 +21,7 @@ const { title, description = "A weekly personal blog by Soham" } = Astro.props;
     <meta name="description" content={description} />
     <title>{title} | bitsbysoh4m</title>
 
-  <!-- Umami Analytics -->
-<script defer src="https://umami-analytics.192.168.1.10.sslip.io/script.js" data-website-id="7ed11910-2cd8-4f5a-a1cd-18fb7c47f875"></script>    <!-- Theme initialization -->
+<!-- Theme initialization -->
     <script is:inline>
       const theme = (() => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
