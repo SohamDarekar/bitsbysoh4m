@@ -1,0 +1,59 @@
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: 136, 58, 234;
+  --accent-light: 224, 204, 250;
+  --accent-dark: 49, 10, 101;
+  --accent-gradient: linear-gradient(
+    45deg,
+    rgb(var(--accent)),
+    rgb(var(--accent-light)) 30%,
+    white 60%
+  );
+  
+  --theme-accent: #3b2f7e;
+  --theme-accent-rgb: 59, 47, 126;
+  --theme-accent-2: #2d2a4d;
+  --theme-text: #24242d;
+  --theme-bg: #ffffff;
+  --theme-card-bg: rgba(255, 255, 255, 0.7);
+  --theme-card-bg-hover: rgba(255, 255, 255, 0.9);
+}
+
+.dark {
+  --theme-accent: #ded7fe;
+  --theme-accent-rgb: 222, 215, 254;
+  --theme-accent-2: #ebf0ff;
+  --theme-text: #ffffff;
+  --theme-bg: #1a1a1a;
+  --theme-card-bg: rgba(26, 26, 26, 0.7);
+  --theme-card-bg-hover: rgba(26, 26, 26, 0.9);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body, button, a, input {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Search Highlight Styles */
+mark.bg-yellow-300 {
+  background-color: rgba(255, 255, 0, 0.35);
+  font-weight: 600;
+}
+
+.dark mark.bg-yellow-600 {
+  background-color: rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-weight: 600;
+}
+
+/* Search Context Border */
+.border-l-3 {
+  border-left-width: 3px;
+}
