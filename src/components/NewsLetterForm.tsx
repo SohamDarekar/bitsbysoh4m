@@ -41,18 +41,18 @@ export default function NewsLetterForm() {
   };
 
   return (
-    <div className="my-12 p-8 md:p-10 rounded-3xl bg-[#171717] border border-[#acabab] shadow-xl transition-all">
-      <h3 className="text-2xl md:text-3xl font-bold mb-2 text-white">Stay in the Loop</h3>
-      <p className="mb-6 text-gray-400 text-sm md:text-base leading-relaxed">
+    <div className="my-12 p-8 md:p-10 rounded-3xl bg-surface-light dark:bg-[#171717] border border-[#3c3c3c] dark:border-[#acabab] shadow-xl transition-all">
+      <h3 className="text-2xl md:text-3xl font-bold mb-2 text-gray-900 dark:text-white">Stay in the Loop</h3>
+      <p className="mb-6 text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
         No spam, just real stories, tech tips, and inspiration delivered weekly straight to your e-mail.
       </p>
       
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 bg-[#171717]" aria-label="Subscribe to newsletter" suppressHydrationWarning >
-        <div className="bg-[#171717] flex flex-col sm:flex-row gap-3 w-full" suppressHydrationWarning>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 bg-transparent" aria-label="Subscribe to newsletter" suppressHydrationWarning >
+        <div className="flex flex-col sm:flex-row gap-3 w-full" suppressHydrationWarning>
           <label htmlFor="email" className="sr-only">Email address</label>
           <div className="relative flex-1">
             <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-teal-400">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-indigo-600 dark:text-teal-400">
                 <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                 <path d="M3 7L12 13L21 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -68,7 +68,7 @@ export default function NewsLetterForm() {
               autoComplete="email"
               aria-describedby="newsletter-feedback"
               disabled={status === 'loading'}
-              className="w-full pl-12 pr-4 py-3.5 border border-[#acabab] rounded-xl bg-[#171717] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+              className="w-full pl-12 pr-4 py-3.5 border border-[#1f1f1f] dark:border-[#acabab] rounded-xl bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
               suppressHydrationWarning
             />
           </div>

@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 // Remove backslashes that Next.js adds when escaping $ in .env files
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH?.replace(/\\\$/g, '$');
 
 export async function POST(request: Request) {
   if (!ADMIN_PASSWORD_HASH || !JWT_SECRET) {
