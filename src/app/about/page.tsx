@@ -13,12 +13,12 @@ export const metadata: Metadata = {
     'software developer blog'
   ],
   alternates: {
-    canonical: 'https://bitsbysoh4m.sohamdarekar.dev/about',
+    canonical: 'https://blog.sohamdarekar.dev/about',
   },
   openGraph: {
     title: 'About Soham Darekar | bitsbysoh4m',
     description: 'Learn more about Soham Darekar and bitsbysoh4m - a weekly personal blog featuring insights on technology, programming, and personal growth.',
-    url: 'https://bitsbysoh4m.sohamdarekar.dev/about',
+    url: 'https://blog.sohamdarekar.dev/about',
     type: 'website',
   },
 };

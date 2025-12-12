@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = 'https://bitsbysoh4m.sohamdarekar.dev';
+  const baseUrl = 'https://blog.sohamdarekar.dev';
   const postUrl = `${baseUrl}/blog/${slug}`;
   const ogImage = `${baseUrl}/images/og-image.png`;
 
@@ -87,7 +87,7 @@ export default async function BlogPost({ params }: Props) {
 
   const { title, date, readingTime, contentHtml, description } = postData;
   
-  const baseUrl = 'https://bitsbysoh4m.sohamdarekar.dev';
+  const baseUrl = 'https://blog.sohamdarekar.dev';
   const postUrl = `${baseUrl}/blog/${slug}`;
   
   const jsonLd = {

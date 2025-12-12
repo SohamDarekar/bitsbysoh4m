@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     'soham darekar blog'
   ],
   alternates: {
-    canonical: 'https://bitsbysoh4m.sohamdarekar.dev',
+    canonical: 'https://blog.sohamdarekar.dev',
   },
 };
 

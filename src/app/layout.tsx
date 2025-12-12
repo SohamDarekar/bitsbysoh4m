@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://bitsbysoh4m.sohamdarekar.dev'),
+  metadataBase: new URL('https://blog.sohamdarekar.dev'),
   title: {
     default: 'bitsbysoh4m - Weekly Blog by Soham Darekar',
     template: '%s | bitsbysoh4m - Soham Darekar'
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://bitsbysoh4m.sohamdarekar.dev',
+    url: 'https://blog.sohamdarekar.dev',
     siteName: 'bitsbysoh4m - Soham Darekar Blog',
     title: 'bitsbysoh4m - Weekly Blog by Soham Darekar',
     description: 'A weekly personal blog by Soham Darekar featuring gratitude, learning, insights, and reflections on technology, coding, and life.',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://bitsbysoh4m.sohamdarekar.dev',
+    canonical: 'https://blog.sohamdarekar.dev',
   },
 };
 
@@ -83,7 +83,7 @@ export default function RootLayout({
     '@type': 'Blog',
     name: 'bitsbysoh4m - Soham Darekar Blog',
     description: 'A weekly personal blog by Soham Darekar featuring gratitude, learning, insights, and reflections on technology, coding, and life.',
-    url: 'https://bitsbysoh4m.sohamdarekar.dev',
+    url: 'https://blog.sohamdarekar.dev',
     author: {
       '@type': 'Person',
       name: 'Soham Darekar',

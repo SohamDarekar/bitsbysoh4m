@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     'programming posts'
   ],
   alternates: {
-    canonical: 'https://bitsbysoh4m.sohamdarekar.dev/archive',
+    canonical: 'https://blog.sohamdarekar.dev/archive',
   },
   openGraph: {
     title: 'Blog Archive | bitsbysoh4m - Soham Darekar',
     description: 'Browse all blog posts by Soham Darekar on bitsbysoh4m. Explore archived articles on technology, programming, and personal insights.',
-    url: 'https://bitsbysoh4m.sohamdarekar.dev/archive',
+    url: 'https://blog.sohamdarekar.dev/archive',
     type: 'website',
   },
 };
