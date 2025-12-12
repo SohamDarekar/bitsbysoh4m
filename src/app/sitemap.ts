@@ -3,12 +3,13 @@ import { getSortedPostsData } from '@/lib/posts';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getSortedPostsData();
-  const baseUrl = 'https://bitsbysoh4m.sohamdarekar.dev';
+  const baseUrl = 'https://blog.sohamdarekar.dev';
 
+  // Map all blog posts to sitemap entries using their slugs
   const postUrls = posts.map((post) => ({
-    url: `${baseUrl}/blog/${post.id}`,
+    url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.date ? new Date(post.date) : new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
 
@@ -23,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/archive`,
