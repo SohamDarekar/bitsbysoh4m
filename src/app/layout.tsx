@@ -107,8 +107,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '32x32' },
-      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+      // Using qubit_light.png (the dark logo) so it is visible on white backgrounds
+      { url: '/qubit_light.png', sizes: 'any' },
     ],
     apple: [
       { url: '/apple-icon.png', sizes: '512x512', type: 'image/png' },
@@ -160,7 +160,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/png" href="/qubit_dark.png" />
+        {/* Manual icon link removed here to prevent conflicts with metadata above */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
