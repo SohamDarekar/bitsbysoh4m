@@ -27,13 +27,21 @@ export async function connectToDatabase() {
     throw new Error('MONGODB_URI is not defined');
   }
 
-  const client = new MongoClient(uri);
+  try {
+    const client = new MongoClient(uri, {
+      serverSelectionTimeoutMS: 5000, // Fail fast
+      connectTimeoutMS: 10000,
+    });
 
-  await client.connect();
-  const db = client.db(dbName);
+    await client.connect();
+    const db = client.db(dbName);
 
-  cached.client = client;
-  cached.db = db;
+    cached.client = client;
+    cached.db = db;
 
-  return { client, db };
+    return { client, db };
+  } catch (error) {
+    console.error('MongoDB connection failed:', error);
+    throw error;
+  }
 }

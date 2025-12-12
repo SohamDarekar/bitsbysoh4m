@@ -17,7 +17,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const postData = await getPostData(params.slug);
+  const { slug } = await params;
+  const postData = await getPostData(slug);
   
   if (!postData) {
     return {
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const baseUrl = 'https://bitsbysoh4m.sohamdarekar.dev';
-  const postUrl = `${baseUrl}/blog/${params.slug}`;
+  const postUrl = `${baseUrl}/blog/${slug}`;
   const ogImage = `${baseUrl}/images/og-image.png`;
 
   return {
@@ -77,7 +78,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPost({ params }: Props) {
-  const postData = await getPostData(params.slug);
+  const { slug } = await params;
+  const postData = await getPostData(slug);
 
   if (!postData) {
     notFound();
@@ -86,7 +88,7 @@ export default async function BlogPost({ params }: Props) {
   const { title, date, readingTime, contentHtml, description } = postData;
   
   const baseUrl = 'https://bitsbysoh4m.sohamdarekar.dev';
-  const postUrl = `${baseUrl}/blog/${params.slug}`;
+  const postUrl = `${baseUrl}/blog/${slug}`;
   
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -127,7 +129,7 @@ export default async function BlogPost({ params }: Props) {
             <span className="mx-2">•</span>
             <span>{readingTime} min read</span>
             <span className="mx-2">•</span>
-            <ShareButton title={title} url={`/blog/${params.slug}`} />
+            <ShareButton title={title} url={`/blog/${slug}`} />
           </div>
         </header>
 

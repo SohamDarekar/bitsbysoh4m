@@ -38,6 +38,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, message: 'Subscribed!', result });
   } catch (e: any) {
     console.error("Subscription error:", e);
-    return NextResponse.json({ success: false, message: 'Server error.', error: e.message }, { status: 500 });
+    
+    // Provide user-friendly error message for connection issues
+    if (e.code === 'ENOTFOUND' || e.message?.includes('ENOTFOUND')) {
+      return NextResponse.json(
+        { success: false, message: 'Newsletter service temporarily unavailable. Please try again later.' }, 
+        { status: 503 }
+      );
+    }
+    
+    return NextResponse.json({ success: false, message: 'Server error. Please try again later.' }, { status: 500 });
   }
 }
