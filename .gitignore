@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # OS
 .DS_Store
+
+SEO_IMPLEMENTATION.md
+DEPLOYMENT_CHECKLIST.md
+check-seo.sh
