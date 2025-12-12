@@ -11,8 +11,14 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#000000',
     icons: [
       {
+        src: '/images/profile.jpg',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any maskable',
+      },
+      {
         src: '/qubit_dark.png',
-        sizes: 'any',
+        sizes: '512x512',
         type: 'image/png',
       },
     ],

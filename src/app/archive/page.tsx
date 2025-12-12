@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   description: 'Browse all blog posts by Soham Darekar on bitsbysoh4m. Explore archived articles on technology, programming, software development, and personal insights.',
   keywords: [
     'Soham Darekar',
+    'Soham Darekar blog archive',
+    'Soham Darekar all posts',
+    'Soham Darekar articles',
+    'Soham Darekar writings',
     'blog sohamdarekar',
     'blog archive',
     'bitsbysoh4m archive',

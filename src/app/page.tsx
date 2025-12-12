@@ -8,17 +8,25 @@ export const metadata: Metadata = {
   description: 'Welcome to bitsbysoh4m, the personal blog of Soham Darekar. Explore weekly posts on technology, programming, software development, gratitude, and life reflections. Join the journey of continuous learning and growth.',
   keywords: [
     'Soham Darekar',
+    'Soham Darekar blog',
+    'Soham Darekar weekly reflections',
+    'Soham Darekar tech insights',
+    'Soham Darekar developer',
+    'Soham Darekar programmer',
+    'Soham Darekar AI',
+    'Soham Darekar ML',
+    'Soham Darekar personal blog',
     'blog sohamdarekar',
     'bitsbysoh4m',
     'soham blog',
+    'soham darekar blog',
     'tech blog',
     'programming blog',
     'developer blog',
     'weekly tech insights',
     'coding journal',
     'software development blog',
-    'personal tech blog',
-    'soham darekar blog'
+    'personal tech blog'
   ],
   alternates: {
     canonical: 'https://blog.sohamdarekar.dev',

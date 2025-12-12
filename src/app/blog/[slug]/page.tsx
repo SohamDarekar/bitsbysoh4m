@@ -38,6 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     publisher: 'Soham Darekar',
     keywords: [
       'Soham Darekar',
+      'Soham Darekar blog',
+      `Soham Darekar ${postData.title}`,
       'blog sohamdarekar',
       'bitsbysoh4m',
       postData.title,
