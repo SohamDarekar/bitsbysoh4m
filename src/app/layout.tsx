@@ -108,7 +108,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       // Using qubit_light.png (the dark logo) so it is visible on white backgrounds
-      { url: '/qubit_light.png', sizes: 'any' },
+      { url: '/qubit_dark.png', sizes: 'any' },
     ],
     apple: [
       { url: '/apple-icon.png', sizes: '512x512', type: 'image/png' },
