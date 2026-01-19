@@ -213,8 +213,8 @@ export default function AdminPage() {
   // If not logged in, show login form
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#171717]">
-        <div className="max-w-md w-full bg-[#2c3440] rounded-lg shadow-lg p-8">
+      <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+        <div className="max-w-md w-full bg-[#1a1a1a] rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-100">Admin Login</h1>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
