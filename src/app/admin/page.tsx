@@ -213,12 +213,12 @@ export default function AdminPage() {
   // If not logged in, show login form
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a] px-4">
-        <div className="max-w-md w-full bg-[#1a1a1a] rounded-lg shadow-lg p-6 sm:p-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-100">Admin Login</h1>
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#1a1a1a] px-4">
+        <div className="max-w-md w-full bg-white dark:bg-[#1a1a1a] rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 p-6 sm:p-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Admin Login</h1>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <input
@@ -227,7 +227,7 @@ export default function AdminPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#3d4754] text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors"
               />
             </div>
             <button
@@ -237,7 +237,7 @@ export default function AdminPage() {
               Login
             </button>
             {loginMessage && (
-              <p className={`text-sm text-center ${loginMessage.includes('successful') ? 'text-green-400' : 'text-red-400'}`}>
+              <p className={`text-sm text-center ${loginMessage.includes('successful') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 {loginMessage}
               </p>
             )}
@@ -249,13 +249,13 @@ export default function AdminPage() {
 
   // If logged in, show admin dashboard
   return (
-    <div className="min-h-screen bg-[#1a1a1a]">
+    <div className="min-h-screen bg-white dark:bg-[#1a1a1a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 tracking-tight">Admin Dashboard</h1>
-            <p className="text-gray-400 text-xs sm:text-sm">Manage your blog and subscribers</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Admin Dashboard</h1>
+            <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Manage your blog and subscribers</p>
           </div>
           <button
             onClick={handleLogout}
@@ -266,14 +266,14 @@ export default function AdminPage() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="mb-6 sm:mb-8 bg-[#1a1a1a] rounded-xl border border-gray-800 shadow-2xl p-2 overflow-x-auto">
+        <div className="mb-6 sm:mb-8 bg-gray-100 dark:bg-[#1a1a1a] rounded-xl border border-gray-200 dark:border-gray-800 shadow-xl p-2 overflow-x-auto">
           <nav className="flex space-x-2 min-w-max sm:min-w-0">
             <button
               onClick={() => setActiveTab('test')}
               className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 font-medium text-xs sm:text-sm rounded-lg transition-all duration-200 whitespace-nowrap ${
                 activeTab === 'test'
                   ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg shadow-emerald-900/30'
-                  : 'text-gray-400 hover:text-gray-300 hover:bg-[#252525]'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252525]'
               }`}
             >
               Test Functions
@@ -283,7 +283,7 @@ export default function AdminPage() {
               className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 font-medium text-xs sm:text-sm rounded-lg transition-all duration-200 whitespace-nowrap ${
                 activeTab === 'subscribers'
                   ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg shadow-emerald-900/30'
-                  : 'text-gray-400 hover:text-gray-300 hover:bg-[#252525]'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252525]'
               }`}
             >
               Subscribers
@@ -293,7 +293,7 @@ export default function AdminPage() {
               className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 font-medium text-xs sm:text-sm rounded-lg transition-all duration-200 whitespace-nowrap ${
                 activeTab === 'newsletter'
                   ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg shadow-emerald-900/30'
-                  : 'text-gray-400 hover:text-gray-300 hover:bg-[#252525]'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252525]'
               }`}
             >
               Send Newsletter
@@ -302,7 +302,7 @@ export default function AdminPage() {
         </div>
 
         {/* Tab Content */}
-        <div className="bg-[#1a1a1a] rounded-xl border border-gray-800 shadow-2xl overflow-hidden">
+        <div className="bg-white dark:bg-[#1a1a1a] rounded-xl border border-gray-200 dark:border-gray-800 shadow-xl overflow-hidden">
           {activeTab === 'test' && (
             <div className="p-4 sm:p-6 lg:p-8">
               <div className="flex items-center mb-6">
@@ -312,8 +312,8 @@ export default function AdminPage() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-white">Test Database Connection</h2>
-                  <p className="text-gray-400 text-xs sm:text-sm mt-1">Verify MongoDB connection status</p>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-white">Test Database Connection</h2>
+                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-1">Verify MongoDB connection status</p>
                 </div>
               </div>
               
@@ -325,11 +325,11 @@ export default function AdminPage() {
               </button>
               
               {testResult && (
-                <div className="mt-6 bg-[#1a1a1a] border border-gray-800 rounded-lg p-4 sm:p-6 shadow-inner">
+                <div className="mt-6 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-800 rounded-lg p-4 sm:p-6 shadow-inner">
                   <div className="flex items-center mb-3">
-                    <span className="text-emerald-400 font-medium text-xs sm:text-sm">Response:</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium text-xs sm:text-sm">Response:</span>
                   </div>
-                  <pre className="text-xs sm:text-sm overflow-x-auto text-gray-300 leading-relaxed font-mono">
+                  <pre className="text-xs sm:text-sm overflow-x-auto text-gray-800 dark:text-gray-300 leading-relaxed font-mono">
                     {testResult}
                   </pre>
                 </div>
@@ -347,8 +347,8 @@ export default function AdminPage() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-white">Subscribers</h2>
-                    <p className="text-gray-400 text-xs sm:text-sm mt-1">View and manage newsletter subscribers</p>
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-white">Subscribers</h2>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-1">View and manage newsletter subscribers</p>
                   </div>
                 </div>
                 <button
@@ -363,39 +363,39 @@ export default function AdminPage() {
               {subscribers.length > 0 ? (
                 <div className="mt-6">
                   {/* Desktop Table View */}
-                  <div className="bg-[#1a1a1a] hidden md:block overflow-x-auto rounded-lg border border-gray-800 shadow-lg">
-                    <table className="min-w-full divide-y divide-gray-800">
-                      <thead className="bg-[#1a1a1a]">
+                  <div className="hidden md:block overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800 shadow-lg">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                      <thead className="bg-gray-50 dark:bg-[#1a1a1a]">
                         <tr>
-                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                             Email
                           </th>
-                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                             Subscribed At
                           </th>
-                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                             Status
                           </th>
-                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-[#1a1a1a] divide-y divide-gray-800">
+                      <tbody className="bg-white dark:bg-[#1a1a1a] divide-y divide-gray-200 dark:divide-gray-800">
                         {subscribers.map((sub) => (
-                          <tr key={sub._id} className="hover:bg-[#252525] transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
+                          <tr key={sub._id} className="hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
                               {sub.email}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                               {new Date(sub.subscribedAt).toLocaleString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                               <span
                                 className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                   sub.unsubscribed
-                                    ? 'bg-red-900/30 text-red-300 border border-red-800'
-                                    : 'bg-emerald-900/30 text-emerald-300 border border-emerald-800'
+                                    ? 'bg-red-100 text-red-700 border border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800'
+                                    : 'bg-emerald-100 text-emerald-700 border border-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800'
                                 }`}
                               >
                                 {sub.unsubscribed ? 'Unsubscribed' : 'Active'}
@@ -404,7 +404,7 @@ export default function AdminPage() {
                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                               <button
                                 onClick={() => handleDeleteSubscriber(sub._id, sub.email)}
-                                className="inline-flex items-center px-3 py-1.5 bg-red-900/30 text-red-300 border border-red-800 rounded-lg hover:bg-red-900/50 hover:border-red-700 transition-all duration-200"
+                                className="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 border border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 hover:border-red-400 dark:hover:border-red-700 transition-all duration-200"
                                 title="Delete subscriber"
                               >
                                 <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -422,29 +422,29 @@ export default function AdminPage() {
                   {/* Mobile Card View */}
                   <div className="md:hidden space-y-4">
                     {subscribers.map((sub) => (
-                      <div key={sub._id} className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4 space-y-3">
+                      <div key={sub._id} className="bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-800 rounded-lg p-4 space-y-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <p className="text-xs font-semibold text-gray-400 uppercase mb-1">Email</p>
-                            <p className="text-sm text-white font-medium break-all">{sub.email}</p>
+                            <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">Email</p>
+                            <p className="text-sm text-gray-900 dark:text-white font-medium break-all">{sub.email}</p>
                           </div>
                           <span
                             className={`ml-2 px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap ${
                               sub.unsubscribed
-                                ? 'bg-red-900/30 text-red-300 border border-red-800'
-                                : 'bg-emerald-900/30 text-emerald-300 border border-emerald-800'
+                                ? 'bg-red-100 text-red-700 border border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800'
+                                : 'bg-emerald-100 text-emerald-700 border border-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800'
                             }`}
                           >
                             {sub.unsubscribed ? 'Unsubscribed' : 'Active'}
                           </span>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-gray-400 uppercase mb-1">Subscribed At</p>
-                          <p className="text-sm text-gray-400">{new Date(sub.subscribedAt).toLocaleString()}</p>
+                          <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">Subscribed At</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-400">{new Date(sub.subscribedAt).toLocaleString()}</p>
                         </div>
                         <button
                           onClick={() => handleDeleteSubscriber(sub._id, sub.email)}
-                          className="w-full inline-flex items-center justify-center px-3 py-2 bg-red-900/30 text-red-300 border border-red-800 rounded-lg hover:bg-red-900/50 hover:border-red-700 transition-all duration-200"
+                          className="w-full inline-flex items-center justify-center px-3 py-2 bg-red-100 text-red-700 border border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 hover:border-red-400 dark:hover:border-red-700 transition-all duration-200"
                           title="Delete subscriber"
                         >
                           <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -456,21 +456,21 @@ export default function AdminPage() {
                     ))}
                   </div>
                   
-                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-2 bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
-                    <p className="text-sm text-gray-400">
-                      Total subscribers: <span className="text-white font-semibold">{subscribers.length}</span>
+                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-2 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Total subscribers: <span className="text-gray-900 dark:text-white font-semibold">{subscribers.length}</span>
                     </p>
-                    <p className="text-sm text-gray-400">
-                      Active: <span className="text-emerald-400 font-semibold">{subscribers.filter(s => !s.unsubscribed).length}</span>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Active: <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{subscribers.filter(s => !s.unsubscribed).length}</span>
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="mt-6 bg-[#1a1a1a] border border-gray-800 rounded-lg p-8 text-center">
-                  <svg className="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mt-6 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-800 rounded-lg p-8 text-center">
+                  <svg className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                   </svg>
-                  <p className="text-gray-400">
+                  <p className="text-gray-600 dark:text-gray-400">
                     No subscribers loaded. Click "Fetch Subscribers" to load them.
                   </p>
                 </div>
@@ -487,21 +487,21 @@ export default function AdminPage() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-white">Send Newsletter</h2>
-                  <p className="text-gray-400 text-xs sm:text-sm mt-1">Compose and send email to subscribers</p>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-white">Send Newsletter</h2>
+                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-1">Compose and send email to subscribers</p>
                 </div>
               </div>
               
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="template" className="bg-[#1a1a1a] block text-sm font-semibold text-gray-300 mb-3">
+                  <label htmlFor="template" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     Template
                   </label>
                   <select
                     id="template"
                     value={selectedTemplate}
                     onChange={(e) => handleTemplateChange(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-700 rounded-lg bg-[#1a1a1a] text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                   >
                     {NEWSLETTER_TEMPLATES.map((template) => (
                       <option key={template.name} value={template.name}>
@@ -512,7 +512,7 @@ export default function AdminPage() {
                 </div>
                 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-semibold text-gray-300 mb-3">
+                  <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     Subject Line
                   </label>
                   <input
@@ -521,12 +521,12 @@ export default function AdminPage() {
                     value={newsletterSubject}
                     onChange={(e) => setNewsletterSubject(e.target.value)}
                     placeholder="Enter newsletter subject..."
-                    className="w-full px-4 py-3 border border-gray-700 rounded-lg bg-[#1a1a1a] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="content" className="block text-sm font-semibold text-gray-300 mb-3">
+                  <label htmlFor="content" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     Content
                   </label>
                   <textarea
@@ -535,13 +535,13 @@ export default function AdminPage() {
                     onChange={(e) => setNewsletterContent(e.target.value)}
                     placeholder="Write your newsletter content here... (Use double line breaks for paragraphs)"
                     rows={10}
-                    className="w-full px-4 py-3 border border-gray-700 rounded-lg bg-[#1a1a1a] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm leading-relaxed transition-all font-mono sm:rows-14"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm leading-relaxed transition-all font-mono sm:rows-14"
                   />
                   <div className="mt-2 flex items-start">
-                    <svg className="w-4 h-4 text-gray-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                     </svg>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-500">
                       Tip: Use double line breaks (Enter twice) to create new paragraphs. Single line breaks will be preserved.
                     </p>
                   </div>
