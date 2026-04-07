@@ -3,6 +3,9 @@ import BlogCard from '@/components/BlogCard';
 import NewsLetterForm from '@/components/NewsLetterForm';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'bitsbysoh4m - Weekly Blog by Soham Darekar | Tech Insights & Personal Reflections',
   description: 'Welcome to bitsbysoh4m, the personal blog of Soham Darekar. Explore weekly posts on technology, programming, software development, gratitude, and life reflections. Join the journey of continuous learning and growth.',

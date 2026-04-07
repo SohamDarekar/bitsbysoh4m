@@ -1,5 +1,6 @@
 import GhostContentAPI from '@tryghost/content-api';
 import GhostAdminAPI from '@tryghost/admin-api';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export class AlreadyRegisteredError extends Error {
   constructor(message: string = 'Member already registered') {
@@ -79,6 +80,8 @@ function mapGhostPost(post: GhostPost): BlogPostSummary {
 }
 
 export async function getPosts(): Promise<BlogPostSummary[]> {
+  noStore();
+
   const posts = (await contentApi.posts.browse({
     limit: 'all',
     order: 'published_at DESC',
@@ -91,6 +94,8 @@ export async function getPosts(): Promise<BlogPostSummary[]> {
 
 export async function getPostBySlug(slug: string): Promise<BlogPostDetail | null> {
   try {
+    noStore();
+
     const post = (await contentApi.posts.read(
       { slug },
       { include: 'tags', formats: ['html', 'plaintext'] }
@@ -108,6 +113,8 @@ export async function getPostBySlug(slug: string): Promise<BlogPostDetail | null
 
 export async function getPageBySlug(slug: string): Promise<string | null> {
   try {
+    noStore();
+
     const page = (await contentApi.pages.read(
       { slug },
       { formats: ['html'] }

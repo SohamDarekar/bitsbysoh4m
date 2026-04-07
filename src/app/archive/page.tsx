@@ -2,6 +2,9 @@ import { getPosts } from '@/lib/ghost';
 import ArchiveClient from './ArchiveClient';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Blog Archive | bitsbysoh4m - Soham Darekar',
   description: 'Browse all blog posts by Soham Darekar on bitsbysoh4m. Explore archived articles on technology, programming, software development, and personal insights.',
