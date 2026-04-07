@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getPostData, getSortedPostsData } from '@/lib/posts';
+import { getPostBySlug } from '@/lib/ghost';
 import { formatDate, formatTime } from '@/lib/utils';
 import ShareButton from '@/components/ShareButton';
 import NewsLetterForm from '@/components/NewsLetterForm';
@@ -9,16 +9,11 @@ interface Props {
   params: { slug: string };
 }
 
-export async function generateStaticParams() {
-  const posts = getSortedPostsData();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const postData = await getPostData(slug);
+  const postData = await getPostBySlug(slug);
   
   if (!postData) {
     return {
@@ -81,13 +76,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
-  const postData = await getPostData(slug);
+  const postData = await getPostBySlug(slug);
 
   if (!postData) {
     notFound();
   }
 
-  const { title, date, readingTime, contentHtml, description } = postData;
+  const { title, date, readingTime, html, description } = postData;
   
   const baseUrl = 'https://blog.sohamdarekar.dev';
   const postUrl = `${baseUrl}/blog/${slug}`;
@@ -137,7 +132,7 @@ export default async function BlogPost({ params }: Props) {
 
         <div 
           className="mt-2 sm:mt-8 text-gray-900 dark:text-gray-100"
-          dangerouslySetInnerHTML={{ __html: contentHtml }} 
+          dangerouslySetInnerHTML={{ __html: html || '' }} 
         />
       </article>
 

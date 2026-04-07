@@ -4,7 +4,7 @@ Allow: /
 
 # Block access to admin routes
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /ghost/
 
 # Sitemap location
 Sitemap: https://blog.sohamdarekar.dev/sitemap.xml

@@ -1,11 +1,10 @@
 import Link from 'next/link';
-import { PostData } from '@/lib/posts';
+import type { BlogPostSummary } from '@/lib/ghost';
 import { formatDate } from '@/lib/utils';
-import readingTime from 'reading-time';
 import React from 'react';
 
 interface Props {
-  post: PostData;
+  post: BlogPostSummary;
   searchQuery?: string;
   searchContext?: string;
   matchScore?: number;
@@ -63,9 +62,8 @@ function highlightText(text: string, query: string): React.ReactElement {
 }
 
 export default function BlogCard({ post, searchQuery = '', searchContext = '', matchScore = 0 }: Props) {
-  const { title, description, date, slug, content } = post;
-  const stats = readingTime(content);
-  const readingMins = Math.ceil(stats.minutes);
+  const { title, description, date, slug, readingTime } = post;
+  const readingMins = Math.max(1, readingTime);
 
   const formatTime = (dateStr: string | Date): string => {
     const dateObj = dateStr instanceof Date ? dateStr : new Date(dateStr);

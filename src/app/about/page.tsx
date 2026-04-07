@@ -1,4 +1,5 @@
-import { getAboutPage } from '@/lib/posts';
+import { getPageBySlug } from '@/lib/ghost';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,11 +31,15 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const aboutData = await getAboutPage();
+  const aboutHtml = await getPageBySlug('about');
+
+  if (!aboutHtml) {
+    notFound();
+  }
 
   return (
     <article className="prose prose-lg dark:prose-invert max-w-none">
-      <div dangerouslySetInnerHTML={{ __html: aboutData.contentHtml }} />
+      <div dangerouslySetInnerHTML={{ __html: aboutHtml }} />
     </article>
   );
 }

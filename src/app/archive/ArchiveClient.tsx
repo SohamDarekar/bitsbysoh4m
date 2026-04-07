@@ -1,15 +1,15 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { PostData } from '@/lib/posts';
+import type { BlogPostSummary } from '@/lib/ghost';
 import BlogCard from '@/components/BlogCard';
 
 interface Props {
-  posts: PostData[];
+  posts: BlogPostSummary[];
 }
 
 interface ScoredPost {
-  post: PostData;
+  post: BlogPostSummary;
   score: number;
   context: string;
 }

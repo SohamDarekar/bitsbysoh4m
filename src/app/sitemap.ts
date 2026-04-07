@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
-import { getSortedPostsData } from '@/lib/posts';
+import { getPosts } from '@/lib/ghost';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const posts = getSortedPostsData();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = await getPosts();
   const baseUrl = 'https://blog.sohamdarekar.dev';
 
   // Map all blog posts to sitemap entries using their slugs

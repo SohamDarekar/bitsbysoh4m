@@ -5,13 +5,13 @@ A weekly journal/blog of gratitude, learning, favourites, and personal reflectio
 
 ## 🚀 Tech Stack
 
-**Frontend:** Next.js 14 (App Router), React 18, TypeScript, TailwindCSS
+**Frontend:** Next.js App Router, React, TypeScript, TailwindCSS
 
-**Backend:** Next.js API Routes, MongoDB, JWT Authentication
+**Content:** Ghost CMS (Headless) via Ghost Content API
 
-**Email:** Nodemailer for newsletter delivery
+**Newsletter:** Ghost Members via Ghost Admin API
 
-**Content:** Markdown with gray-matter, remark, and remark-html
+**Admin:** Ghost Admin (/ghost)
 
 ## 📦 Installation
 
@@ -28,35 +28,19 @@ npm install
 
 3. Create a `.env.local` file in the root directory with the following variables:
 ```env
-# MongoDB
-MONGODB_URI=your_mongodb_connection_string
-MONGODB_DB_NAME=newsletter
+# Ghost Content API
+GHOST_URL=https://your-ghost-site.com
+GHOST_CONTENT_API_KEY=your_ghost_content_api_key
 
-# JWT Secret (generate a random string)
-JWT_SECRET=your_super_secret_jwt_key_here
+# Ghost Admin API (for member subscribe endpoint)
+GHOST_ADMIN_API_KEY=your_ghost_admin_api_key
 
-# Admin Password Hash (use npm run hash-password to generate)
-ADMIN_PASSWORD_HASH=your_bcrypt_hashed_password
-
-# SMTP Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_app_password
-SMTP_FROM=your_email@gmail.com
-SMTP_FROM_NAME=Bits by Soham
+# Used by /admin redirect page
+NEXT_PUBLIC_GHOST_ADMIN_URL=https://your-ghost-site.com/ghost
 
 # Website URL
-WEBSITE_URL=http://localhost:3000/
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
-
-4. Generate a password hash:
-```bash
-npm run hash-password your_password_here
-```
-Copy the output and paste it as `ADMIN_PASSWORD_HASH` in your `.env.local` file.
 
 ## 🎯 Development
 
@@ -81,37 +65,17 @@ npm start
 
 ## 📝 Adding Blog Posts
 
-1. Create a new folder in `_content/blog/` with your post date as the folder name
-2. Create a markdown file inside (e.g., `june 1, 2025.md`)
-3. Add frontmatter at the top:
-```markdown
----
-title: "Your Post Title"
-description: "A brief description"
-date: "2025-06-01T09:41:00"
-customSlug: "your-custom-slug"
----
-
-Your content here...
-```
-
-4. The post will automatically appear on the homepage and archive page
+Create and publish posts in Ghost Admin. New posts are fetched dynamically by the frontend.
 
 ## 🔐 Admin Dashboard
 
-Access the admin dashboard at `/admin` with your configured password.
-
-Features:
-- Test database connection
-- View all subscribers
-- Send newsletters to all active subscribers
+Visit `/admin` in this app to be redirected to Ghost Admin.
 
 ## 📧 Newsletter System
 
-- Users can subscribe via the newsletter form on any page
-- Admin can send newsletters with custom HTML content
-- Automatic unsubscribe links included in every email
-- Tracks subscription dates and status
+- Users can subscribe via the existing newsletter form in the frontend
+- Subscription requests are created/updated as Ghost Members
+- Sending newsletters and member management are handled in Ghost Admin
 
 ## 🎨 Dark Mode
 
@@ -121,9 +85,6 @@ The site supports automatic dark mode based on system preferences, with a manual
 
 ```
 bitsbysoh4m/
-├── _content/              # Markdown blog posts and about page
-│   ├── blog/
-│   └── about/
 ├── public/               # Static assets
 │   ├── qubit_dark.png
 │   └── qubit_light.png
@@ -131,12 +92,11 @@ bitsbysoh4m/
 │   ├── app/             # Next.js App Router pages and API routes
 │   │   ├── api/         # API endpoints
 │   │   ├── blog/        # Dynamic blog post pages
-│   │   ├── admin/       # Admin dashboard
+│   │   ├── admin/       # Redirects to Ghost Admin
 │   │   ├── archive/     # Archive with search
 │   │   └── about/       # About page
 │   ├── components/      # React components
-│   ├── lib/            # Utility functions and database
-│   └── middleware.ts   # JWT authentication middleware
+│   └── lib/             # Utility functions + Ghost clients
 ├── .env.local          # Environment variables (not in git)
 ├── next.config.mjs     # Next.js configuration
 └── tailwind.config.mjs # Tailwind CSS configuration
@@ -144,11 +104,8 @@ bitsbysoh4m/
 
 ## 🔒 Security Features
 
-- Password hashing with bcrypt
-- JWT-based authentication for admin routes
-- Middleware protection for sensitive endpoints
+- Ghost Content/Admin API keys for secure CMS access
 - Environment variables for all secrets
-- httpOnly cookies for tokens
 
 ## 📄 License
 
@@ -156,6 +113,6 @@ This is a personal blog project. All content © Soham.
 
 ## 🙏 Acknowledgments
 
-Built with Next.js, React, MongoDB, and lots of ☕️
+Built with Next.js, React, Ghost, and lots of coffee.
 
 

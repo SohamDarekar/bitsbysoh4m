@@ -57,3 +57,118 @@ mark.bg-yellow-300 {
 .border-l-3 {
   border-left-width: 3px;
 }
+
+/* Ghost file upload card styles */
+.prose .kg-file-card {
+  margin: 1.25rem 0;
+}
+
+.prose .kg-file-card .kg-file-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.05rem 1.25rem;
+  border: 1px solid rgba(var(--theme-accent-rgb), 0.28);
+  border-radius: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  background:
+    linear-gradient(135deg, rgba(var(--theme-accent-rgb), 0.08), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.dark .prose .kg-file-card .kg-file-card-container {
+  border-color: rgba(var(--theme-accent-rgb), 0.32);
+  background:
+    linear-gradient(135deg, rgba(var(--theme-accent-rgb), 0.12), rgba(255, 255, 255, 0.03));
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.prose .kg-file-card .kg-file-card-container:hover {
+  border-color: rgba(var(--theme-accent-rgb), 0.5);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+}
+
+.prose .kg-file-card .kg-file-card-contents {
+  min-width: 0;
+  flex: 1;
+}
+
+.prose .kg-file-card .kg-file-card-title {
+  font-size: 1.95rem;
+  font-weight: 750;
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.prose .kg-file-card .kg-file-card-caption {
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
+.prose .kg-file-card .kg-file-card-metadata {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+  opacity: 0.92;
+  color: rgba(55, 65, 81, 0.95);
+}
+
+.dark .prose .kg-file-card .kg-file-card-metadata {
+  color: rgba(229, 231, 235, 0.88);
+}
+
+.prose .kg-file-card .kg-file-card-filename,
+.prose .kg-file-card .kg-file-card-filesize {
+  margin: 0;
+}
+
+.prose .kg-file-card .kg-file-card-filesize::before {
+  content: '\2022';
+  margin-right: 0.4rem;
+}
+
+.prose .kg-file-card .kg-file-card-icon,
+.prose .kg-file-card .kg-file-card-thumbnail {
+  flex-shrink: 0;
+  width: 5.75rem;
+  height: 4.75rem;
+  border-radius: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--theme-accent-rgb), 0.12);
+  border: 1px solid rgba(var(--theme-accent-rgb), 0.28);
+  color: rgb(var(--theme-accent-rgb));
+}
+
+.prose .kg-file-card .kg-file-card-icon svg {
+  width: 1.7rem;
+  height: 1.7rem;
+  stroke-width: 1.75;
+}
+
+.prose .kg-file-card .kg-file-card-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .prose .kg-file-card .kg-file-card-title {
+    font-size: 1.55rem;
+  }
+
+  .prose .kg-file-card .kg-file-card-icon,
+  .prose .kg-file-card .kg-file-card-thumbnail {
+    width: 4.5rem;
+    height: 4rem;
+  }
+}

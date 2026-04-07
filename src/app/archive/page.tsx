@@ -1,4 +1,4 @@
-import { getSortedPostsData } from '@/lib/posts';
+import { getPosts } from '@/lib/ghost';
 import ArchiveClient from './ArchiveClient';
 import type { Metadata } from 'next';
 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ArchivePage() {
-  const posts = getSortedPostsData();
+  const posts = await getPosts();
 
   return (
     <div>

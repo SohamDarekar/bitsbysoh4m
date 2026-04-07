@@ -1,4 +1,4 @@
-import { getSortedPostsData } from '@/lib/posts';
+import { getPosts } from '@/lib/ghost';
 import BlogCard from '@/components/BlogCard';
 import NewsLetterForm from '@/components/NewsLetterForm';
 import type { Metadata } from 'next';
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const posts = getSortedPostsData();
+  const posts = await getPosts();
 
   return (
     <>
