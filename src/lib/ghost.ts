@@ -25,6 +25,10 @@ interface GhostPost {
   tags?: GhostTag[];
 }
 
+interface GhostContentPostsResponse {
+  posts?: GhostPost[];
+}
+
 interface GhostPage {
   html?: string;
 }
@@ -93,22 +97,47 @@ export async function getPosts(): Promise<BlogPostSummary[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPostDetail | null> {
-  try {
-    noStore();
+  noStore();
 
-    const post = (await contentApi.posts.read(
-      { slug },
-      { include: 'tags', formats: ['html', 'plaintext'] }
-    )) as unknown as GhostPost;
+  const requestedSlug = decodeURIComponent(slug).trim();
+  console.info('[ghost] getPostBySlug requested slug:', requestedSlug);
 
-    const mapped = mapGhostPost(post);
-    return {
-      ...mapped,
-      html: post.html || '',
-    };
-  } catch {
+  const contentBaseUrl = 'https://ghost.sohamdarekar.dev';
+  const postsUrl = new URL('/ghost/api/content/posts/', contentBaseUrl);
+  postsUrl.searchParams.set('key', ghostContentKey);
+  postsUrl.searchParams.set('slug', requestedSlug);
+  postsUrl.searchParams.set('include', 'authors,tags');
+  postsUrl.searchParams.set('formats', 'html,plaintext');
+  postsUrl.searchParams.set('limit', '1');
+
+  const response = await fetch(postsUrl.toString(), {
+    cache: 'no-store',
+    next: { revalidate: 0 },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Ghost Content API request failed (${response.status} ${response.statusText})`);
+  }
+
+  const data = (await response.json()) as GhostContentPostsResponse;
+  const post = data.posts?.[0] ?? null;
+
+  console.info('[ghost] getPostBySlug API response:', {
+    status: response.status,
+    found: Boolean(post),
+    returnedSlug: post?.slug ?? null,
+    postCount: data.posts?.length ?? 0,
+  });
+
+  if (!post) {
     return null;
   }
+
+  const mapped = mapGhostPost(post);
+  return {
+    ...mapped,
+    html: post.html || '',
+  };
 }
 
 export async function getPageBySlug(slug: string): Promise<string | null> {
