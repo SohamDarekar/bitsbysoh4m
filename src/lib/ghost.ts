@@ -102,10 +102,15 @@ export async function getPostBySlug(slug: string): Promise<BlogPostDetail | null
   const requestedSlug = decodeURIComponent(slug).trim();
   console.info('[ghost] getPostBySlug requested slug:', requestedSlug);
 
-  const contentBaseUrl = 'https://ghost.sohamdarekar.dev';
-  const postsUrl = new URL('/ghost/api/content/posts/', contentBaseUrl);
-  postsUrl.searchParams.set('key', ghostContentKey);
-  postsUrl.searchParams.set('slug', requestedSlug);
+  if (!requestedSlug) {
+    return null;
+  }
+
+  // Escape for a quoted NQL string so the slug cannot alter the filter.
+  const escapedSlug = requestedSlug.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  const postsUrl = new URL(`${ghostUrl!.replace(/\/+$/, '')}/ghost/api/content/posts/`);
+  postsUrl.searchParams.set('key', ghostContentKey!);
+  postsUrl.searchParams.set('filter', `slug:'${escapedSlug}'`);
   postsUrl.searchParams.set('include', 'authors,tags');
   postsUrl.searchParams.set('formats', 'html,plaintext');
   postsUrl.searchParams.set('limit', '1');
@@ -120,12 +125,14 @@ export async function getPostBySlug(slug: string): Promise<BlogPostDetail | null
   }
 
   const data = (await response.json()) as GhostContentPostsResponse;
-  const post = data.posts?.[0] ?? null;
+  const firstPost = data.posts?.[0];
+  // Never render a post other than the one requested.
+  const post = firstPost?.slug === requestedSlug ? firstPost : null;
 
   console.info('[ghost] getPostBySlug API response:', {
     status: response.status,
     found: Boolean(post),
-    returnedSlug: post?.slug ?? null,
+    returnedSlug: firstPost?.slug ?? null,
     postCount: data.posts?.length ?? 0,
   });
 

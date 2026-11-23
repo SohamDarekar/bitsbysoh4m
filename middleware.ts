@@ -1,13 +1,13 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-const GHOST_BASE_URL = 'https://ghost.sohamdarekar.dev';
+const GHOST_BASE_URL = process.env.GHOST_URL?.replace(/\/+$/, '');
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  if (pathname.startsWith('/r/')) {
-    const redirectUrl = new URL(`${pathname}${search}`, GHOST_BASE_URL);
+  if (GHOST_BASE_URL && pathname.startsWith('/r/')) {
+    const redirectUrl = new URL(`${GHOST_BASE_URL}${pathname}${search}`);
     return NextResponse.redirect(redirectUrl);
   }
 

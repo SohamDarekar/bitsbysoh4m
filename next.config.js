@@ -17,10 +17,15 @@ const nextConfig = {
   },
 
   async rewrites() {
+    const ghostUrl = process.env.GHOST_URL?.replace(/\/+$/, '');
+    if (!ghostUrl) {
+      return [];
+    }
+
     return [
       {
         source: '/r/:path*',
-        destination: 'https://ghost.sohamdarekar.dev/r/:path*',
+        destination: `${ghostUrl}/r/:path*`,
       },
     ];
   },
