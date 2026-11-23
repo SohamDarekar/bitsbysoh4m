@@ -14,7 +14,13 @@ export default function manifest(): MetadataRoute.Manifest {
         src: '/images/profile.jpg',
         sizes: '512x512',
         type: 'image/png',
-        purpose: 'any maskable',
+        purpose: 'any',
+      },
+      {
+        src: '/images/profile.jpg',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
       },
       {
         src: '/qubit_dark.png',
